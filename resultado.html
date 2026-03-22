@@ -179,7 +179,7 @@
       <div style="font-size:0.72rem;color:var(--text-dim);margin-top:4px;">acesso único · imediato</div>
     </div>
 
-    <a class="btn-cta mb-12" href="obrigado.html" id="ctaBtn">
+    <a class="btn-cta mb-12" href="#" id="ctaBtn">
       Ver dossiê completo agora
     </a>
 
@@ -338,9 +338,35 @@
       '</div>' +
     '</div>';
 
-  // =================== CTA SAVE ===================
-  document.getElementById('ctaBtn').addEventListener('click', function(){
+  // =================== CTA → GG CHECKOUT ===================
+  var GG_CHECKOUT_SLUG = 'p7u97yIba6rXM0k4NWMc'; // Checkout ID do GG
+
+  document.getElementById('ctaBtn').addEventListener('click', function(e){
+    e.preventDefault();
     sessionStorage.setItem('chegou_paywall', '1');
+
+    var key   = profileKey;
+    var sc    = score;
+    var nome  = sessionStorage.getItem('nome_suspeito') || '';
+
+    // Monta answers compacto para caber no utm_term
+    var answers = {};
+    for(var i = 1; i <= 10; i++){
+      var v = localStorage.getItem('q' + i);
+      if(v !== null) answers[i] = v;
+    }
+    var qtb = localStorage.getItem('qtb');
+    if(qtb !== null) answers['tb'] = qtb;
+
+    // utm_content = profileKey, utm_term = score, utm_campaign = nome, utm_source = answers JSON compacto
+    var params = new URLSearchParams();
+    params.set('utm_content',  key);
+    params.set('utm_term',     sc);
+    params.set('utm_campaign', nome);
+    params.set('utm_source',   JSON.stringify(answers));
+
+    var url = 'https://checkout.ggcheckout.com/' + GG_CHECKOUT_SLUG + '?' + params.toString();
+    window.location.href = url;
   });
 
 })();

@@ -110,6 +110,33 @@
 <script>
 (function(){
 
+  // =================== RESTAURA DADOS VIA UTM (pós-checkout GG) ===================
+  // Quando o GG redireciona para cá, os UTMs que estavam na URL do checkout
+  // são repassados como query params. Restauramos no sessionStorage/localStorage.
+  (function restoreFromUtm(){
+    try {
+      var p = new URLSearchParams(window.location.search);
+      var key     = p.get('utm_content');
+      var score   = p.get('utm_term');
+      var nome    = p.get('utm_campaign');
+      var answers = p.get('utm_source');
+
+      if(key)   sessionStorage.setItem('profileKey',    key);
+      if(score) sessionStorage.setItem('profileScore',  score);
+      if(nome)  sessionStorage.setItem('nome_suspeito', nome);
+
+      if(answers){
+        try {
+          var ans = JSON.parse(answers);
+          Object.keys(ans).forEach(function(k){
+            var lsKey = k === 'tb' ? 'qtb' : 'q' + k;
+            localStorage.setItem(lsKey, ans[k]);
+          });
+        } catch(e){}
+      }
+    } catch(e){}
+  })();
+
   // =================== TIMER ===================
   var KEY = 'oto_timer_end';
   var DURATION = 10 * 60 * 1000; // 10 minutes
