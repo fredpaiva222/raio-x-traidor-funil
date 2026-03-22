@@ -1,0 +1,9 @@
+{
+  "name": "raio-x-traidor",
+  "version": "1.0.0",
+  "description": "Funil de vendas - Raio-X do Traidor",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

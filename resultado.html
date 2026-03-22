@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raio-X do Traidor — Resultado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" defer></script>
+<style>
+  .result-wrap {
+    position: relative;
+    z-index: 2;
+    padding: 28px 20px 80px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .scan-done-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--green);
+    text-align: center;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .profile-name {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .profile-preview {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+  .paywall-cta-box {
+    background: var(--bg-card);
+    border: 1px solid rgba(239,35,60,0.2);
+    border-radius: 20px;
+    padding: 28px 20px;
+    text-align: center;
+    position: relative;
+    z-index: 3;
+  }
+  .paywall-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.25;
+  }
+  .paywall-body {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+  .urgency-line {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+  .atencao-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--red);
+    border-radius: 16px;
+    padding: 24px 20px;
+  }
+  .atencao-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+  .atencao-item:last-child { border-bottom: none; }
+  .atencao-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--red);
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .evidencias-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    justify-items: center;
+    margin-bottom: 4px;
+  }
+  .foto-borrada {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+  }
+  .foto-borrada img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    filter: blur(7px) brightness(0.6) saturate(0.4);
+    display: block;
+  }
+  .foto-borrada-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.3);
+  }
+  .foto-borrada-label span {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.45rem;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.4;
+    border: 1px solid rgba(239,35,60,0.5);
+    padding: 3px 5px;
+    border-radius: 3px;
+    background: rgba(0,0,0,0.5);
+  }
+  .app-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.8rem;
+  }
+  .app-row:last-child { border-bottom: none; }
+  .app-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--red);
+    flex-shrink: 0;
+    animation: pulseDot 1.4s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="global-bg">
+  <div class="grad-top"></div>
+  <div class="red-orb"></div>
+  <div class="grid"></div>
+</div>
+<div class="stars-layer"></div>
+<div class="stars-layer"></div>
+
+<div class="result-wrap">
+
+  <!-- TOP STATUS -->
+  <div class="scan-done-label mb-20">✓ Varredura concluída. Dossiê gerado.</div>
+
+  <!-- EVIDENCIAS + PONTOS DE ATENÇÃO — Filled by JS -->
+  <div id="resultadoMain"></div>
+
+  <!-- PAYWALL CTA -->
+  <div class="paywall-cta-box mb-20">
+    <div class="paywall-title mb-12">Seu dossiê está pronto.</div>
+    <p class="paywall-body mb-20">
+      A análise completa está aguardando você. Veja os 10 sinais interpretados, o cruzamento digital, o perfil comportamental completo e o plano de ação específico para a sua situação.
+    </p>
+
+    <div class="price-box mb-20">
+      <div class="price-orig mb-4">De R$ 97,00</div>
+      <div class="price-now">R$ 37,00</div>
+      <div style="font-size:0.72rem;color:var(--text-dim);margin-top:4px;">acesso único · imediato</div>
+    </div>
+
+    <a class="btn-cta mb-12" href="obrigado.html" id="ctaBtn">
+      Ver dossiê completo agora
+    </a>
+
+    <p class="trust-text mb-12">🔒 Pagamento seguro · Acesso imediato · Privado</p>
+    <p class="urgency-line">Seu dossiê ficará disponível por tempo limitado nesta sessão.</p>
+  </div>
+
+  <p class="disclaimer">
+    Esta análise é gerada a partir de inteligência comportamental e padrões de reconhecimento digital. Os resultados são informativos. Esta ferramenta não substitui aconselhamento profissional.
+  </p>
+
+</div>
+
+<script>
+(function(){
+
+  // =================== SCORE ===================
+  function getScore() {
+    var score = 0;
+    for(var i = 1; i <= 10; i++){
+      var v = parseInt(localStorage.getItem('q' + i));
+      if(!isNaN(v)) score += v;
+    }
+    var tb = parseInt(localStorage.getItem('qtb'));
+    if(!isNaN(tb)) score += tb;
+    return score;
+  }
+
+  function getProfileKey(score) {
+    if(score <= 7)  return 'low';
+    if(score <= 15) return 'moderate';
+    if(score <= 22) return 'elevated';
+    return 'critical';
+  }
+
+  var score = getScore();
+  var profileKey = getProfileKey(score);
+
+  sessionStorage.setItem('profileKey', profileKey);
+  sessionStorage.setItem('profileScore', score);
+
+  // =================== PONTOS DE ATENÇÃO POR PERFIL ===================
+  var ATENCAO = {
+    low: [
+      'A varredura digital foi concluída em todos os canais indexados disponíveis. Os dados coletados foram cruzados com padrões comportamentais registrados em nossa base.',
+      'Foram identificadas algumas variações comportamentais de baixa intensidade nos dados analisados. Nenhum sinal isolado é conclusivo, mas o cruzamento entre eles revela um padrão que merece atenção.',
+      'A análise comportamental apontou inconsistências pontuais que não chegam a configurar risco elevado, mas que indicam que algo mudou — ainda que de forma sutil — no padrão de comportamento descrito.',
+      'O dossiê completo detalha cada sinal com sua intensidade real e o que ele significa no contexto do seu relacionamento específico.'
+    ],
+    moderate: [
+      'A varredura identificou múltiplos pontos de atenção que, individualmente, poderiam ter explicações simples — mas em conjunto formam um padrão que não pode ser ignorado.',
+      'Foram detectadas alterações no comportamento digital e presencial que são consistentes com um processo de distanciamento ativo. O tipo de mudança que acontece quando alguém está direcionando atenção para fora do relacionamento.',
+      'A análise comportamental cruzou os sinais descritos com mais de 12.000 casos documentados. O padrão identificado tem alta correlação com comportamentos de dupla conduta — não é prova, mas é um indicador sério.',
+      'O dossiê completo revela quais sinais têm o maior peso diagnóstico e o que cada um deles sugere sobre o comportamento real dele nos últimos meses.'
+    ],
+    elevated: [
+      'A varredura retornou dados que exigem atenção imediata. Os sinais identificados não estão isolados — eles se reforçam mutuamente e formam um padrão de alta consistência.',
+      'A análise comportamental identificou uma convergência significativa entre os comportamentos descritos e padrões documentados em casos de infidelidade ativa. Essa convergência raramente é coincidência.',
+      'Foram detectadas alterações simultâneas em múltiplos eixos de comportamento — digital, emocional e presencial. Quando três ou mais eixos mudam ao mesmo tempo, há uma causa em comum. O dossiê identifica qual.',
+      'O que você está sentindo não é paranoia. Os dados confirmam que há algo a ser investigado. O dossiê completo mostra o que foi encontrado e o que você deve fazer com essa informação.'
+    ],
+    critical: [
+      'A varredura retornou resultados de alta consistência. O nível de convergência entre os sinais identificados é o mais elevado registrado nesta categoria de análise.',
+      'A análise comportamental identificou um padrão estruturado — não um deslize, não uma fase. O tipo de comportamento que exige planejamento ativo e manutenção constante de uma narrativa paralela.',
+      'Os dados digitais cruzados com os comportamentos descritos apontam para algo que você já provavelmente sabe, mas ainda não tem como provar. O dossiê completo muda isso.',
+      'Este é o momento de agir com estratégia, não com emoção. O dossiê completo entrega as informações e o plano de ação específico para a sua situação — incluindo o que fazer, o que não fazer, e como se proteger.'
+    ]
+  };
+
+  // =================== IMAGENS BORRADAS ===================
+  function rndDay(){ return Math.floor(Math.random() * 14) + 1; }
+  function rndNums(count) {
+    var nums = [];
+    while(nums.length < count) {
+      var n = Math.floor(Math.random() * 70) + 1;
+      if(nums.indexOf(n) === -1) nums.push(n);
+    }
+    return nums;
+  }
+
+  var nums = rndNums(3);
+  var fotosHtml = nums.map(function(num){
+    return (
+      '<div class="foto-borrada">' +
+        '<img src="https://randomuser.me/api/portraits/men/' + num + '.jpg" alt="">' +
+        '<div class="foto-borrada-label"><span>BLOQUEADO</span></div>' +
+      '</div>'
+    );
+  }).join('');
+
+  var appsHtml =
+    '<div style="margin-top:14px;">' +
+      '<div class="app-row">' +
+        '<div class="app-dot"></div>' +
+        '<span style="font-weight:600;color:var(--text);font-size:0.82rem;">Tinder</span>' +
+        '<span style="font-size:0.75rem;color:var(--text-muted);margin-left:auto;">Perfil detectado &bull; ' + rndDay() + ' dias atrás</span>' +
+      '</div>' +
+      '<div class="app-row">' +
+        '<div class="app-dot"></div>' +
+        '<span style="font-weight:600;color:var(--text);font-size:0.82rem;">Badoo</span>' +
+        '<span style="font-size:0.75rem;color:var(--text-muted);margin-left:auto;">Perfil detectado &bull; ' + rndDay() + ' dias atrás</span>' +
+      '</div>' +
+      '<div class="app-row">' +
+        '<div class="app-dot"></div>' +
+        '<span style="font-weight:600;color:var(--text);font-size:0.82rem;">Happn</span>' +
+        '<span style="font-size:0.75rem;color:var(--text-muted);margin-left:auto;">Possível correspondência</span>' +
+      '</div>' +
+      '<div class="app-row">' +
+        '<div class="app-dot"></div>' +
+        '<span style="font-weight:600;color:var(--text);font-size:0.82rem;">Meetic</span>' +
+        '<span style="font-size:0.75rem;color:var(--text-muted);margin-left:auto;">Dados indexados</span>' +
+      '</div>' +
+    '</div>';
+
+  // =================== BUILD RESULTADO MAIN ===================
+  var pontos = ATENCAO[profileKey];
+  var atencoesHtml = pontos.map(function(p){
+    return '<div class="atencao-item"><div class="atencao-dot"></div><div>' + p + '</div></div>';
+  }).join('');
+
+  // Bloco de evidências (fotos + apps) — para todos os perfis, mas texto muda
+  var evidLabel = profileKey === 'low'
+    ? 'REGISTROS DA VARREDURA — ACESSO RESTRITO'
+    : 'REGISTROS ENCONTRADOS — ACESSO RESTRITO';
+
+  var evidSubtext = profileKey === 'low'
+    ? 'A varredura cruzou a imagem com as principais plataformas digitais. Os registros completos estão no dossiê.'
+    : 'Foram identificados registros associados ao perfil analisado nas plataformas abaixo. Os dados completos, incluindo datas e nível de similaridade, estão bloqueados no dossiê.';
+
+  var mainEl = document.getElementById('resultadoMain');
+  mainEl.innerHTML =
+
+    // BLOCO DE EVIDÊNCIAS — aparece primeiro, impacto visual imediato
+    '<div style="background:rgba(239,35,60,0.05);border:1px solid rgba(239,35,60,0.25);border-radius:16px;padding:20px;margin-bottom:20px;">' +
+      '<div style="font-family:\'Roboto Mono\',monospace;font-size:0.58rem;font-weight:700;color:var(--red);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px;">' + evidLabel + '</div>' +
+      '<div class="evidencias-grid">' + fotosHtml + '</div>' +
+      appsHtml +
+      '<div style="margin-top:14px;font-size:0.7rem;color:var(--text-dim);text-align:center;font-style:italic;line-height:1.5;">' + evidSubtext + '</div>' +
+    '</div>' +
+
+    // PONTOS DE ATENÇÃO
+    '<div class="atencao-block mb-20">' +
+      '<div style="font-family:\'Roboto Mono\',monospace;font-size:0.6rem;color:var(--red);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:16px;">O que a análise encontrou</div>' +
+      atencoesHtml +
+    '</div>' +
+
+    // BLUR PREVIEW DO DOSSIÊ
+    '<div class="paywall-blur mb-0" style="height:160px;margin-bottom:-20px;">' +
+      '<div class="blur-content dossie-section-block" style="padding:20px;">' +
+        '<div style="font-family:\'Roboto Mono\',monospace;font-size:0.62rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">Dossiê completo — Confidencial</div>' +
+        '<div style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;">' +
+          '<p style="margin-bottom:6px;">■ Perfil comportamental completo com classificação de risco...</p>' +
+          '<p style="margin-bottom:6px;">■ Análise detalhada dos 10 sinais com interpretação individual...</p>' +
+          '<p>■ Plano de ação com 5 passos específicos para a sua situação...</p>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  // =================== CTA SAVE ===================
+  document.getElementById('ctaBtn').addEventListener('click', function(){
+    sessionStorage.setItem('chegou_paywall', '1');
+  });
+
+})();
+</script>
+</body>
+</html>

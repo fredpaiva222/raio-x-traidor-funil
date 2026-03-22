@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raio-X do Traidor — Enviar foto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" defer></script>
+<style>
+  body { overflow-y: auto; }
+  .name-field-wrap {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .name-field-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .name-field {
+    width: 100%;
+    padding: 13px 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+  .name-field::placeholder { color: var(--text-dim); font-weight: 400; }
+  .name-field:focus {
+    border-color: rgba(239,35,60,0.5);
+    box-shadow: 0 0 0 3px rgba(239,35,60,0.08);
+  }
+  .name-field.filled {
+    border-color: rgba(239,35,60,0.3);
+  }
+  .page-center {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .upload-inner {
+    width: 100%;
+    max-width: 380px;
+    padding: 0 20px;
+  }
+  .upload-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    line-height: 1.3;
+  }
+  .upload-sub {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    text-align: center;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  .upload-status {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .upload-status.success { color: var(--green); }
+  .preview-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--green);
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(34,197,94,0.3);
+  }
+  .btn-cta-wrap {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .btn-cta-wrap.show {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .upload-zone-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+  }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="global-bg">
+  <div class="grad-top"></div>
+  <div class="red-orb"></div>
+  <div class="grid"></div>
+</div>
+<div class="stars-layer"></div>
+<div class="stars-layer"></div>
+
+<div class="page-center">
+  <div class="upload-inner">
+
+    <!-- STEP DOTS -->
+    <div class="step-dots mb-28" style="margin-bottom:28px;">
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+    </div>
+
+    <!-- TITLE -->
+    <h1 class="upload-title mb-8">Envie uma foto do rosto dele</h1>
+    <p class="upload-sub mb-24">Uma foto clara e recente garante uma análise mais precisa.</p>
+
+    <!-- CAMPO NOME -->
+    <div class="name-field-wrap">
+      <label class="name-field-label" for="nomeInput">Nome do suspeito</label>
+      <input
+        type="text"
+        id="nomeInput"
+        class="name-field"
+        placeholder="Ex: João, Carlos, Pedro..."
+        autocomplete="off"
+        maxlength="40"
+      >
+    </div>
+
+    <!-- UPLOAD ZONE -->
+    <div class="upload-zone mb-20" id="uploadZone" onclick="triggerInput()">
+      <div class="scan-frame">
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+      </div>
+      <div class="scan-line" id="scanLine"></div>
+
+      <div class="upload-zone-inner" id="uploadInner">
+        <iconify-icon icon="lucide:upload-cloud" width="36" style="color:var(--red);opacity:0.7;"></iconify-icon>
+        <div class="upload-status" id="uploadStatus">Toque para enviar ou arraste a foto</div>
+      </div>
+
+      <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="handleFile(this)">
+    </div>
+
+    <!-- CTA -->
+    <div class="btn-cta-wrap" id="ctaWrap">
+      <a class="btn-cta" href="quiz.html" id="ctaBtn">
+        Continuar para análise →
+      </a>
+    </div>
+
+    <!-- TRUST -->
+    <p class="trust-text mt-16">🔒 Sua foto é usada apenas para esta análise e não é armazenada.</p>
+
+  </div>
+</div>
+
+<script>
+var fotoOk = false;
+
+function triggerInput() {
+  document.getElementById('fileInput').click();
+}
+
+function checkReady() {
+  var nome = document.getElementById('nomeInput').value.trim();
+  var cta = document.getElementById('ctaWrap');
+  if(fotoOk && nome.length >= 2) {
+    cta.classList.add('show');
+  } else {
+    cta.classList.remove('show');
+  }
+}
+
+document.getElementById('nomeInput').addEventListener('input', function(){
+  this.classList.toggle('filled', this.value.trim().length >= 2);
+  checkReady();
+});
+
+document.getElementById('uploadZone').addEventListener('dragover', function(e){
+  e.preventDefault();
+  this.style.borderColor = 'rgba(239,35,60,0.8)';
+});
+
+document.getElementById('uploadZone').addEventListener('dragleave', function(){
+  if(!this.classList.contains('uploaded')) this.style.borderColor = '';
+});
+
+document.getElementById('uploadZone').addEventListener('drop', function(e){
+  e.preventDefault();
+  var files = e.dataTransfer.files;
+  if(files && files[0]) processFile(files[0]);
+});
+
+function handleFile(input) {
+  if(input.files && input.files[0]) processFile(input.files[0]);
+}
+
+function processFile(file) {
+  if(!file.type.match('image.*')) return;
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var base64 = e.target.result;
+    sessionStorage.setItem('foto_base64', base64);
+
+    var zone = document.getElementById('uploadZone');
+    zone.classList.add('uploaded');
+    zone.style.cursor = 'default';
+    document.getElementById('scanLine').style.display = 'none';
+
+    var inner = document.getElementById('uploadInner');
+    inner.innerHTML =
+      '<img src="' + base64 + '" class="preview-img" alt="Foto carregada">' +
+      '<div class="upload-status success mt-12">✓ Foto carregada com sucesso.</div>';
+
+    fotoOk = true;
+    checkReady();
+  };
+  reader.readAsDataURL(file);
+}
+
+// Salva nome antes de navegar
+document.getElementById('ctaBtn').addEventListener('click', function(){
+  var nome = document.getElementById('nomeInput').value.trim();
+  if(nome) sessionStorage.setItem('nome_suspeito', nome);
+});
+</script>
+</body>
+</html>

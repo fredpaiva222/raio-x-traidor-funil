@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raio-X do Traidor — Oferta especial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" defer></script>
+<style>
+  .oto-wrap {
+    position: relative;
+    z-index: 2;
+    padding: 32px 20px 80px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .oto-h1 {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(1.15rem, 4vw, 1.4rem);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.35;
+    text-align: center;
+  }
+  .oto-body {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    text-align: center;
+  }
+  .timer-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="global-bg">
+  <div class="grad-top"></div>
+  <div class="red-orb"></div>
+  <div class="grid"></div>
+</div>
+<div class="stars-layer"></div>
+<div class="stars-layer"></div>
+
+<div class="oto-wrap">
+
+  <!-- EXCLUSIVE BADGE -->
+  <div class="text-center mb-24">
+    <span class="exclusive-badge">
+      <iconify-icon icon="lucide:star" width="10"></iconify-icon>
+      Oferta exclusiva · Disponível apenas agora
+    </span>
+  </div>
+
+  <!-- TIMER -->
+  <div class="timer-box mb-28">
+    <div class="timer-label">Essa oferta expira em</div>
+    <div class="timer-display" id="timerDisplay">10:00</div>
+  </div>
+
+  <!-- HEADLINE -->
+  <h1 class="oto-h1 mb-20">Espera. Uma coisa importante antes do dossiê.</h1>
+
+  <!-- BODY -->
+  <p class="oto-body mb-8">
+    Agora que você tem o dossiê, você tem a informação. Mas informação sem monitoramento contínuo é como trocar a fechadura e deixar a janela aberta.
+  </p>
+  <p class="oto-body mb-28">
+    O <strong style="color:var(--text);">Monitoramento 30 Dias</strong> acompanha a presença digital dele de forma silenciosa. Você recebe alertas quando algo muda — novo perfil, nova atividade, novos padrões. Em tempo real.
+  </p>
+
+  <!-- BENEFITS -->
+  <ul class="checklist mb-28">
+    <li>Monitoramento contínuo por 30 dias em 6 plataformas</li>
+    <li>Alertas automáticos por e-mail quando há nova atividade detectada</li>
+    <li>Relatório semanal de atividade digital com variações de comportamento</li>
+    <li>Guia completo: como agir em cada cenário (confronto, separação, reconciliação)</li>
+  </ul>
+
+  <!-- PRICE -->
+  <div class="price-box mb-20">
+    <div class="price-orig mb-4">De R$ 97,00</div>
+    <div class="price-now mb-4">R$ 37,00</div>
+    <div style="font-size:0.7rem;color:var(--text-dim);">oferta única · não se repete</div>
+  </div>
+
+  <!-- CTA -->
+  <a class="btn-cta mb-12" href="membros.html" id="ctaOto">
+    Sim, quero o Monitoramento 30 Dias por R$ 37,00
+  </a>
+
+  <a class="reject-link" href="membros.html" id="rejectLink">
+    Não, prefiro ir direto ao dossiê.
+  </a>
+
+  <p class="trust-text mt-16">🔒 Pagamento seguro · Privado · Sem renovação automática</p>
+
+</div>
+
+<script>
+(function(){
+
+  // =================== TIMER ===================
+  var KEY = 'oto_timer_end';
+  var DURATION = 10 * 60 * 1000; // 10 minutes
+
+  var endTime = parseInt(sessionStorage.getItem(KEY));
+  if(!endTime || isNaN(endTime) || endTime < Date.now()) {
+    endTime = Date.now() + DURATION;
+    sessionStorage.setItem(KEY, endTime);
+  }
+
+  var timerEl = document.getElementById('timerDisplay');
+
+  function updateTimer() {
+    var remaining = Math.max(0, endTime - Date.now());
+    var mins = Math.floor(remaining / 60000);
+    var secs = Math.floor((remaining % 60000) / 1000);
+    var str = (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+    timerEl.textContent = str;
+
+    if(remaining < 60000) {
+      timerEl.classList.add('urgent');
+    } else {
+      timerEl.classList.remove('urgent');
+    }
+
+    if(remaining > 0) {
+      setTimeout(updateTimer, 500);
+    } else {
+      timerEl.textContent = '00:00';
+    }
+  }
+
+  updateTimer();
+
+  // =================== SAVE CHOICE ===================
+  document.getElementById('ctaOto').addEventListener('click', function(){
+    sessionStorage.setItem('comprou_oto1', 'true');
+  });
+
+  document.getElementById('rejectLink').addEventListener('click', function(){
+    sessionStorage.setItem('comprou_oto1', 'false');
+  });
+
+})();
+</script>
+</body>
+</html>

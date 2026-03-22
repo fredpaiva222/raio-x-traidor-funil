@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raio-X do Traidor — Análise comportamental</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" defer></script>
+<style>
+  .quiz-wrap {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 28px 20px 60px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .quiz-header {
+    margin-bottom: 28px;
+  }
+  .quiz-progress-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    text-align: center;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+  #questionArea {
+    flex: 1;
+  }
+  @media (min-width: 700px) {
+    .quiz-wrap { max-width: 520px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="global-bg">
+  <div class="grad-top"></div>
+  <div class="red-orb"></div>
+  <div class="grid"></div>
+</div>
+<div class="stars-layer"></div>
+<div class="stars-layer"></div>
+
+<div class="quiz-wrap">
+
+  <!-- HEADER WITH PROGRESS BAR -->
+  <div class="quiz-header">
+    <div class="progress-wrap">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="quiz-progress-label" id="progressLabel">SINAL 0 DE 10</div>
+  </div>
+
+  <!-- QUESTION AREA -->
+  <div id="questionArea"></div>
+
+</div>
+
+<script src="quiz.js"></script>
+</body>
+</html>

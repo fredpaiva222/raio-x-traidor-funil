@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raio-X do Traidor — Varredura Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" defer></script>
+<style>
+  body { padding-top: 36px; overflow-x: hidden; }
+
+  /* ============ LOGO ============ */
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .logo-icon {
+    width: 44px; height: 44px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .logo-icon svg { width: 100%; height: 100%; }
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+  .logo-main {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+  }
+  .logo-raio {
+    font-size: 1.05rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .logo-x {
+    font-size: 1.55rem;
+    font-weight: 900;
+    color: var(--red);
+    letter-spacing: -0.02em;
+    margin: 0 4px;
+    text-shadow: 0 0 18px rgba(239,35,60,0.6);
+    line-height: 1;
+  }
+  .logo-do {
+    font-size: 1.05rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .logo-traidor {
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+    display: block;
+    margin-top: 1px;
+  }
+  .logo-sub {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.44rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 40px 0 24px;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 5.5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 span.red { color: var(--red); }
+  .hero-sub {
+    font-size: 0.97rem;
+    color: var(--text-muted);
+    max-width: 360px;
+    margin: 0 auto;
+    line-height: 1.65;
+  }
+  .hero-cta-wrap {
+    max-width: 340px;
+    margin: 0 auto;
+  }
+
+  /* ============ MURAL DETETIVE ============ */
+  .mural-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto 16px;
+    background: #0d0508;
+    border: 1px solid rgba(239,35,60,0.2);
+    border-radius: 12px;
+    padding: 12px 12px 8px;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.7), inset 0 0 40px rgba(0,0,0,0.5);
+  }
+  /* corkboard texture */
+  .mural-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(239,35,60,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(239,35,60,0.03) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .mural-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.48rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .mural-label::before, .mural-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+  /* foto grid */
+  .mural-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .mural-foto {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: #111;
+    transform: rotate(var(--rot, 0deg));
+    box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    transition: transform 0.2s;
+  }
+  .mural-foto img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: brightness(0.55) saturate(0.3) blur(2px);
+    display: block;
+  }
+  /* pin */
+  .mural-foto::before {
+    content: '';
+    position: absolute;
+    top: 3px; left: 50%;
+    transform: translateX(-50%);
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 6px rgba(239,35,60,0.8);
+    z-index: 2;
+  }
+  /* red X overlay on some */
+  .mural-foto.marked::after {
+    content: '✕';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: rgba(239,35,60,0.85);
+    text-shadow: 0 0 12px rgba(239,35,60,0.6);
+  }
+  /* question mark placeholder */
+  .mural-foto.unknown {
+    background: rgba(239,35,60,0.05);
+    border: 1px dashed rgba(239,35,60,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    color: rgba(239,35,60,0.4);
+  }
+  /* red string lines */
+  .mural-string {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(239,35,60,0.5), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* app icons row */
+  .mural-apps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 0 2px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .mural-app-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,255,255,0.1);
+    opacity: 0.85;
+    transition: opacity 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+  .mural-app-icon:hover { opacity: 1; transform: scale(1.1); }
+  /* scanning bar over mural */
+  .mural-scan {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(239,35,60,0.8), transparent);
+    animation: muralScan 3s ease-in-out infinite;
+    pointer-events: none;
+    border-radius: 12px;
+  }
+  @keyframes muralScan {
+    0%   { top: 12px; opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { top: calc(100% - 12px); opacity: 0; }
+  }
+
+  /* ============ SCAN TICKER ============ */
+  .scan-ticker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(239,35,60,0.05);
+    border: 1px solid rgba(239,35,60,0.15);
+    border-radius: 100px;
+    padding: 6px 14px;
+    margin: 0 auto 20px;
+    width: fit-content;
+    max-width: 100%;
+  }
+  .scan-ticker-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    flex-shrink: 0;
+    animation: pulseDot 1.4s infinite;
+  }
+  .scan-ticker-text {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+  .scan-ticker-num {
+    font-weight: 700;
+    color: var(--red);
+  }
+
+  /* ============ DATA LINES (decorative) ============ */
+  .data-lines {
+    position: relative;
+    overflow: hidden;
+    height: 2px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 2px;
+    margin: 0 0 20px;
+  }
+  .data-lines::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -40%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--red), transparent);
+    animation: scanLine 2.5s ease-in-out infinite;
+  }
+  @keyframes scanLine {
+    from { left: -40%; }
+    to   { left: 140%; }
+  }
+
+  /* ============ STEP CARDS ============ */
+  .mechanism-section { padding: 8px 0 0; }
+  .step-card-new {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .step-card-new.visible { opacity: 1; transform: translateY(0); }
+  .step-card-new::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--red);
+    opacity: 0.6;
+  }
+  .step-num-badge {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(239,35,60,0.1);
+    border: 1px solid rgba(239,35,60,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--red);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-content-new {}
+  .step-title-new {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .step-desc-new {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  /* ============ PAIN ============ */
+  .pain-section { padding: 8px 0 8px; }
+  .pain-box {
+    background: linear-gradient(135deg, rgba(239,35,60,0.04) 0%, rgba(0,0,0,0) 100%);
+    border: 1px solid rgba(239,35,60,0.15);
+    border-left: 3px solid var(--red);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .pain-quote {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-style: italic;
+  }
+  .pain-quote strong { color: var(--text); font-style: normal; }
+
+  /* ============ SOCIAL PROOF CARDS ============ */
+  .testimonials-section { padding: 8px 0; }
+  .wpp-card-new {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+  }
+
+  /* ============ CTA FINAL ============ */
+  .cta-final { padding: 16px 0 60px; }
+  .cta-final h2 {
+    font-size: clamp(1.2rem, 4vw, 1.7rem);
+    font-weight: 800;
+    line-height: 1.3;
+  }
+
+  /* ============ PRICE TAG ============ */
+  .price-tag {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    background: rgba(239,35,60,0.06);
+    border: 1px solid rgba(239,35,60,0.2);
+    border-radius: 100px;
+    padding: 6px 16px;
+    margin-bottom: 16px;
+  }
+  .price-tag-from {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    text-decoration: line-through;
+  }
+  .price-tag-val {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--red);
+  }
+  .price-tag-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+  }
+
+  /* ============ SECTION ============ */
+  .section-title { font-family: 'Manrope', sans-serif; font-size: clamp(1rem,3.5vw,1.4rem); font-weight: 800; color: var(--text); }
+  .section-gap { margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announcement-bar" id="announcementBar">
+  <span class="live-dot" style="display:inline-block;width:5px;height:5px;border-radius:50%;background:#fff;animation:pulseDot 1.4s infinite;vertical-align:middle;margin-right:6px;"></span>
+  14.832 análises processadas hoje &nbsp;·&nbsp; Resultado em menos de 5 minutos
+</div>
+
+<!-- BACKGROUND -->
+<div class="global-bg">
+  <div class="grad-top"></div>
+  <div class="red-orb"></div>
+  <div class="grid"></div>
+</div>
+<div class="stars-layer"></div>
+<div class="stars-layer"></div>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+  <div class="container text-center">
+
+    <!-- LOGO -->
+    <div class="logo-wrap">
+      <div class="logo-icon">
+        <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer dashed ring -->
+          <circle cx="22" cy="22" r="20" stroke="#ef233c" stroke-width="1.2" stroke-dasharray="3 2.5" opacity="0.45"/>
+          <!-- Mid ring -->
+          <circle cx="22" cy="22" r="13" stroke="#ef233c" stroke-width="1" opacity="0.6"/>
+          <!-- Inner ring -->
+          <circle cx="22" cy="22" r="7" stroke="#ef233c" stroke-width="1" opacity="0.8"/>
+          <!-- Center fill -->
+          <circle cx="22" cy="22" r="3.5" fill="#ef233c"/>
+          <!-- Crosshairs top/bottom -->
+          <line x1="22" y1="2" x2="22" y2="9" stroke="#ef233c" stroke-width="1.2" opacity="0.55"/>
+          <line x1="22" y1="35" x2="22" y2="42" stroke="#ef233c" stroke-width="1.2" opacity="0.55"/>
+          <!-- Crosshairs left/right -->
+          <line x1="2" y1="22" x2="9" y2="22" stroke="#ef233c" stroke-width="1.2" opacity="0.55"/>
+          <line x1="35" y1="22" x2="42" y2="22" stroke="#ef233c" stroke-width="1.2" opacity="0.55"/>
+          <!-- Lightning bolt -->
+          <path d="M24.5 12L18.5 22.5H23L20.5 32L27 21H22.5L24.5 12Z" fill="#ef233c"/>
+          <!-- Corner ticks -->
+          <line x1="6" y1="6" x2="10" y2="6" stroke="#ef233c" stroke-width="1" opacity="0.35"/>
+          <line x1="6" y1="6" x2="6" y2="10" stroke="#ef233c" stroke-width="1" opacity="0.35"/>
+          <line x1="38" y1="6" x2="34" y2="6" stroke="#ef233c" stroke-width="1" opacity="0.35"/>
+          <line x1="38" y1="6" x2="38" y2="10" stroke="#ef233c" stroke-width="1" opacity="0.35"/>
+          <line x1="6" y1="38" x2="10" y2="38" stroke="#ef233c" stroke-width="1" opacity="0.35"/>
+          <line x1="6" y1="38" x2="6" y2="34" stroke="#ef233c" stroke-width="1" opacity="0.35"/>
+          <line x1="38" y1="38" x2="34" y2="38" stroke="#ef233c" stroke-width="1" opacity="0.35"/>
+          <line x1="38" y1="38" x2="38" y2="34" stroke="#ef233c" stroke-width="1" opacity="0.35"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <div class="logo-main">
+          <span class="logo-raio">Raio</span><span class="logo-x">✕</span><span class="logo-do">do</span>
+        </div>
+        <span class="logo-traidor">Traidor</span>
+        <span class="logo-sub">Varredura Digital · Dossiê Comportamental</span>
+      </div>
+    </div>
+
+    <!-- MURAL DETETIVE -->
+    <div class="mural-wrap" id="muralWrap">
+      <div class="mural-scan"></div>
+      <div class="mural-label">Registros sob análise</div>
+      <div class="mural-grid" id="muralGrid">
+        <!-- preenchido por JS -->
+      </div>
+      <div class="mural-apps">
+        <!-- Tinder -->
+        <div class="mural-app-icon" title="Tinder">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <path d="M16 2C16 2 8 10 8 17.5C8 22.2 11.6 26 16 26C20.4 26 24 22.2 24 17.5C24 10 16 2 16 2Z" fill="#FE3C72"/>
+            <path d="M16 26C20.4 26 24 22.2 24 17.5C24 14 22 11 19.5 9C19.5 9 20 13 17 15.5C17 15.5 18 12 15 10C15 10 12 14 12 17.5C12 20 13.8 22 16 22" fill="#FF6B35"/>
+          </svg>
+        </div>
+        <!-- Badoo -->
+        <div class="mural-app-icon" title="Badoo">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <ellipse cx="16" cy="16" rx="14" ry="14" fill="#6B3FA0"/>
+            <text x="16" y="21" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="white">b</text>
+          </svg>
+        </div>
+        <!-- Happn -->
+        <div class="mural-app-icon" title="Happn">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="#1A1A2E"/>
+            <path d="M10 8 L10 24" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round"/>
+            <path d="M22 8 L22 24" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round"/>
+            <path d="M10 16 Q16 10 22 16" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <!-- Meetic -->
+        <div class="mural-app-icon" title="Meetic">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="#E8002D"/>
+            <text x="16" y="22" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="white">M</text>
+          </svg>
+        </div>
+        <!-- Bumble -->
+        <div class="mural-app-icon" title="Bumble">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="16" fill="#F9BF01"/>
+            <path d="M10 13h12M10 16h12M10 19h12" stroke="#1A1A1A" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="badge mb-16">
+      <span class="live-dot"></span>
+      Varredura digital em tempo real
+    </div>
+
+    <h1 class="mb-12">
+      Envie uma foto dele e descubra<br>
+      se ele está te <span class="red">traindo</span>
+    </h1>
+
+    <p class="hero-sub mb-20">
+      Nossa tecnologia cruza a imagem com redes sociais, apps de namoro e bases de dados digitais. Resultado em menos de 5 minutos.
+    </p>
+
+    <div style="height:12px;"></div>
+
+    <div class="hero-cta-wrap">
+      <a class="btn-cta mb-12" href="upload.html">
+        Iniciar análise gratuita →
+      </a>
+      <p class="trust-text">🔒 Privado &nbsp;·&nbsp; Sem cadastro &nbsp;·&nbsp; Resultado em 5 min</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== MECHANISM ==================== -->
+<section class="mechanism-section">
+  <div class="container">
+    <div class="data-lines"></div>
+    <div class="text-center section-gap">
+      <span class="section-label">Como funciona</span>
+      <h2 class="section-title mt-8">3 passos. 5 minutos. A verdade.</h2>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+
+      <div class="step-card-new">
+        <div class="step-num-badge">01</div>
+        <div class="step-content-new">
+          <div class="step-title-new">Envie a foto</div>
+          <div class="step-desc-new">Uma foto clara do rosto dele. Pode ser do celular, de rede social ou qualquer imagem recente.</div>
+        </div>
+      </div>
+
+      <div class="step-card-new">
+        <div class="step-num-badge">02</div>
+        <div class="step-content-new">
+          <div class="step-title-new">Responda 10 perguntas</div>
+          <div class="step-desc-new">Perguntas rápidas sobre o comportamento dele. Menos de 3 minutos — e o resultado fica muito mais preciso.</div>
+        </div>
+      </div>
+
+      <div class="step-card-new">
+        <div class="step-num-badge">03</div>
+        <div class="step-content-new">
+          <div class="step-title-new">Receba o dossiê</div>
+          <div class="step-desc-new">Análise comportamental completa, perfil de risco e sinais cruzados com dados digitais — tudo em um relatório.</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="data-lines" style="margin-top:16px;margin-bottom:0;"></div>
+  </div>
+</section>
+
+<!-- ==================== PAIN ==================== -->
+<section class="pain-section">
+  <div class="container">
+    <div class="pain-box">
+      <p class="pain-quote">Você sente que algo mudou. Ele está mais distante, protege o celular, chega tarde, tem uma explicação pra tudo. E você fica lá, tentando convencer a si mesma de que <strong>"você já nem sabe se está ficando louca"</strong> — enquanto a sua intuição grita que não.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TESTIMONIALS ==================== -->
+<section class="testimonials-section">
+  <div class="container">
+
+    <p class="text-center muted mb-16" style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-family:'Roboto Mono',monospace;color:var(--text-dim);">
+      O que outras mulheres dizem
+    </p>
+
+    <div id="carouselWrap" style="position:relative;overflow:hidden;">
+
+      <div class="wpp-card wpp-fade" id="slide0">
+        <div class="wpp-header">
+          <div class="wpp-avatar">C</div>
+          <div>
+            <div class="wpp-name">Camila R.</div>
+            <div class="wpp-loc">São Paulo · SP</div>
+          </div>
+        </div>
+        <div class="wpp-bubble">
+          "Eu duvidei muito antes de usar. Mas o relatório apontou o perfil dele em dois apps de namoro que eu nem conhecia. Confrontei ele com os prints e ele confessou tudo. Não me arrependo."
+        </div>
+      </div>
+
+      <div class="wpp-card wpp-fade" id="slide1" style="display:none;">
+        <div class="wpp-header">
+          <div class="wpp-avatar">R</div>
+          <div>
+            <div class="wpp-name">Renata M.</div>
+            <div class="wpp-loc">Belo Horizonte · MG</div>
+          </div>
+        </div>
+        <div class="wpp-bubble">
+          "Fiz o quiz e tudo que eu descrevi sobre o comportamento dele bateu exatamente com o dossiê. Foi como um espelho. Me ajudou a tomar uma decisão que eu estava adiando faz meses."
+        </div>
+      </div>
+
+      <div class="wpp-card wpp-fade" id="slide2" style="display:none;">
+        <div class="wpp-header">
+          <div class="wpp-avatar">J</div>
+          <div>
+            <div class="wpp-name">Juliana F.</div>
+            <div class="wpp-loc">Curitiba · PR</div>
+          </div>
+        </div>
+        <div class="wpp-bubble">
+          "O resultado mostrou baixo risco e eu fiquei aliviada de verdade. Minha insegurança estava me destruindo mais do que qualquer traição. Saber a verdade me deu a paz que eu precisava."
+        </div>
+      </div>
+
+    </div>
+
+    <div class="carousel-dots mt-14" id="carouselDots">
+      <div class="carousel-dot active" onclick="goSlide(0)"></div>
+      <div class="carousel-dot" onclick="goSlide(1)"></div>
+      <div class="carousel-dot" onclick="goSlide(2)"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== CTA FINAL ==================== -->
+<section class="cta-final">
+  <div class="container text-center">
+    <div class="data-lines" style="margin-bottom:20px;"></div>
+
+    <h2 class="mb-12">Sua resposta está a 5 minutos.</h2>
+    <p class="mb-20" style="max-width:320px;margin-left:auto;margin-right:auto;font-size:0.9rem;color:var(--text-muted);">
+      Pare de ficar rodando em círculos. A análise é privada, sem cadastro e entrega resultado imediato.
+    </p>
+
+    <div style="max-width:340px;margin:0 auto;">
+      <a class="btn-cta mb-12" href="upload.html">Começar análise agora →</a>
+      <p class="trust-text">🔒 Mais de 14.000 mulheres já usaram essa análise.</p>
+    </div>
+
+    <div class="disclaimer mt-24">
+      Esta ferramenta é de caráter informativo e educativo. Não substitui aconselhamento jurídico ou psicológico. Os resultados são gerados a partir de análise comportamental e tecnologia de reconhecimento de padrões digitais.
+    </div>
+
+  </div>
+</section>
+
+<script>
+// ==================== MURAL DETETIVE ====================
+(function(){
+  var grid = document.getElementById('muralGrid');
+  if(!grid) return;
+
+  // 10 cells: 8 fotos borradas + 1 marcada + 1 interrogação
+  var rotations = [-3, 2, -1.5, 3, -2, 1, -3.5, 2.5, -1, 2];
+  var markedIdx = 4; // foto com X vermelho
+  var unknownIdx = 9; // interrogação
+
+  // números aleatórios únicos para randomuser
+  function rndNums(count, max) {
+    var nums = [], n;
+    while(nums.length < count) {
+      n = Math.floor(Math.random() * max) + 1;
+      if(nums.indexOf(n) === -1) nums.push(n);
+    }
+    return nums;
+  }
+  var fotoNums = rndNums(9, 70); // 9 fotos reais
+  var fotoIdx = 0;
+
+  for(var i = 0; i < 10; i++) {
+    var cell = document.createElement('div');
+    cell.className = 'mural-foto';
+    cell.style.setProperty('--rot', rotations[i] + 'deg');
+
+    if(i === unknownIdx) {
+      cell.classList.add('unknown');
+      cell.textContent = '?';
+    } else {
+      if(i === markedIdx) cell.classList.add('marked');
+      var img = document.createElement('img');
+      img.src = 'https://randomuser.me/api/portraits/men/' + fotoNums[fotoIdx++] + '.jpg';
+      img.alt = '';
+      cell.appendChild(img);
+    }
+    grid.appendChild(cell);
+  }
+})();
+
+// ==================== TICKER COUNTER ====================
+(function(){
+  var base = 14832;
+  var el = document.getElementById('tickerCount');
+  setInterval(function(){
+    base += Math.floor(Math.random() * 3);
+    el.textContent = base.toLocaleString('pt-BR');
+  }, 8000);
+})();
+
+// ==================== STEP CARDS OBSERVER ====================
+(function(){
+  var cards = document.querySelectorAll('.step-card-new');
+  if (!('IntersectionObserver' in window)) {
+    cards.forEach(function(c){ c.classList.add('visible'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e, i){
+      if(e.isIntersecting){
+        setTimeout(function(){ e.target.classList.add('visible'); }, i * 120);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  cards.forEach(function(c){ obs.observe(c); });
+})();
+
+// ==================== TESTIMONIAL CAROUSEL ====================
+var currentSlide = 0;
+var slides = ['slide0','slide1','slide2'];
+var dots = document.querySelectorAll('.carousel-dot');
+var timer;
+
+function goSlide(idx) {
+  var old = document.getElementById(slides[currentSlide]);
+  if(old) { old.style.opacity='0'; setTimeout(function(){ old.style.display='none'; }, 400); }
+  dots[currentSlide].classList.remove('active');
+  currentSlide = idx;
+  var next = document.getElementById(slides[currentSlide]);
+  if(next) {
+    next.style.display='block';
+    next.style.opacity='0';
+    setTimeout(function(){ next.style.opacity='1'; }, 20);
+  }
+  dots[currentSlide].classList.add('active');
+  clearInterval(timer);
+  timer = setInterval(function(){ goSlide((currentSlide+1) % slides.length); }, 3500);
+}
+
+timer = setInterval(function(){ goSlide((currentSlide+1) % slides.length); }, 3500);
+</script>
+</body>
+</html>
