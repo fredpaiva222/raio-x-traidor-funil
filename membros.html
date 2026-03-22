@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raio-X do Traidor — Dossiê Confidencial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" defer></script>
+<style>
+  .dossie-wrap {
+    position: relative;
+    z-index: 2;
+    padding: 24px 16px 80px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* ---- HERO HEADER ---- */
+  .dossie-hero {
+    background: linear-gradient(135deg, #0d0007 0%, #0a0a0f 100%);
+    border: 1px solid rgba(239,35,60,0.25);
+    border-top: 3px solid var(--red);
+    border-radius: 18px;
+    padding: 24px 20px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .dossie-hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: radial-gradient(ellipse, rgba(239,35,60,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .dossie-hero-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .dossie-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--red);
+    flex-shrink: 0;
+    box-shadow: 0 0 16px rgba(239,35,60,0.3);
+  }
+  .dossie-avatar-placeholder {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: rgba(239,35,60,0.1);
+    border: 2px solid rgba(239,35,60,0.3);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--red); flex-shrink: 0;
+  }
+  .dossie-subject-name {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .dossie-subject-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-top: 2px;
+  }
+  .dossie-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .dossie-meta-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .dossie-meta-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.5rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+  }
+  .dossie-meta-val {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* ---- SECTION BLOCK ---- */
+  .sec-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+  .sec-block.red-accent { border-top: 2px solid var(--red); }
+  .sec-block.yellow-accent { border-top: 2px solid var(--yellow); }
+  .sec-block.green-accent { border-top: 2px solid var(--green); }
+  .sec-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .sec-icon {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    background: rgba(239,35,60,0.1);
+    border: 1px solid rgba(239,35,60,0.2);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--red); font-size: 0.8rem; flex-shrink: 0;
+  }
+  .sec-icon.yellow { background: rgba(234,179,8,0.1); border-color: rgba(234,179,8,0.2); color: var(--yellow); }
+  .sec-icon.green  { background: rgba(34,197,94,0.1);  border-color: rgba(34,197,94,0.2);  color: var(--green);  }
+
+  /* ---- SCAN DATA GRID ---- */
+  .scan-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .scan-stat {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .scan-stat-val {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .scan-stat-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.52rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ---- FOTO GALERIA ---- */
+  .foto-galeria {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .foto-card {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 1;
+  }
+  .foto-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .foto-card.borrada img {
+    filter: blur(7px) brightness(0.55) saturate(0.3);
+  }
+  .foto-card .foto-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+    padding: 6px 5px 5px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.4rem;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
+  }
+  .foto-card .foto-lock-badge {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .foto-card .foto-lock-badge span {
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(239,35,60,0.5);
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.42rem;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ---- APP STATUS ---- */
+  .app-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+  .app-row:last-child { margin-bottom: 0; }
+  .app-row.r-inativo { background: rgba(234,179,8,0.06); border: 1px solid rgba(234,179,8,0.2); }
+  .app-row.r-nenhum  { background: rgba(34,197,94,0.05);  border: 1px solid rgba(34,197,94,0.15); }
+  .app-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .app-dot.yellow { background: var(--yellow); }
+  .app-dot.green  { background: var(--green); }
+  .app-name { font-weight: 600; color: var(--text); font-size: 0.82rem; }
+  .app-status-text { font-size: 0.7rem; margin-top: 1px; }
+  .app-sim { margin-left: auto; font-family: 'Roboto Mono', monospace; font-size: 0.65rem; color: var(--text-dim); flex-shrink: 0; }
+
+  /* ---- SIGNAL CARDS ---- */
+  .sig-card {
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    border-left: 3px solid;
+  }
+  .sig-card:last-child { margin-bottom: 0; }
+  .sig-card.low      { background: rgba(34,197,94,0.04);  border-color: var(--green);  }
+  .sig-card.moderate { background: rgba(234,179,8,0.04);  border-color: var(--yellow); }
+  .sig-card.elevated { background: rgba(249,115,22,0.05); border-color: var(--orange); }
+  .sig-card.critical { background: rgba(239,35,60,0.06);  border-color: var(--red);    }
+  .sig-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    gap: 8px;
+  }
+  .sig-name { font-family: 'Manrope', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--text); }
+  .sig-level {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.5rem;
+    padding: 2px 7px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+  .sig-level.low      { background: rgba(34,197,94,0.15);  color: var(--green);  }
+  .sig-level.moderate { background: rgba(234,179,8,0.15);  color: var(--yellow); }
+  .sig-level.elevated { background: rgba(249,115,22,0.15); color: var(--orange); }
+  .sig-level.critical { background: rgba(239,35,60,0.15);  color: var(--red);    }
+  .sig-answer {
+    font-size: 0.74rem;
+    color: var(--text-dim);
+    font-style: italic;
+    padding: 4px 8px;
+    border-left: 2px solid rgba(255,255,255,0.07);
+    margin-bottom: 6px;
+  }
+  .sig-interp { font-size: 0.8rem; color: var(--text-muted); line-height: 1.55; }
+
+  /* ---- CONVERGENCE ---- */
+  .conv-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .conv-item:last-child { border-bottom: none; }
+  .conv-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(239,35,60,0.15);
+    border: 1px solid rgba(239,35,60,0.3);
+    color: var(--red);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ---- PROFILE BLOCK ---- */
+  .profile-card-main {
+    background: linear-gradient(135deg, rgba(239,35,60,0.06) 0%, rgba(10,10,15,1) 60%);
+    border: 1px solid rgba(239,35,60,0.2);
+    border-radius: 16px;
+    padding: 22px 20px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .profile-big-name {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.15;
+  }
+  .profile-desc-p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .profile-desc-p:last-child { margin-bottom: 0; }
+
+  /* ---- ACTION PLAN ---- */
+  .action-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .action-item:last-child { border-bottom: none; }
+  .action-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--red);
+    color: #fff;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .action-text { font-size: 0.86rem; color: var(--text); line-height: 1.55; }
+
+  /* ---- UPSELL ---- */
+  .upsell-block {
+    background: linear-gradient(135deg, rgba(239,35,60,0.06) 0%, var(--bg-card) 100%);
+    border: 1px solid rgba(239,35,60,0.25);
+    border-radius: 18px;
+    padding: 24px 20px;
+    margin-bottom: 14px;
+  }
+  .upsell-checklist { list-style: none; padding: 0; margin: 0; }
+  .upsell-checklist li {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.84rem; color: var(--text); line-height: 1.5;
+  }
+  .upsell-checklist li:last-child { border-bottom: none; }
+  .upsell-checklist li::before {
+    content: '✓'; color: var(--green); font-weight: 700; font-size: 0.8rem; flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* ---- OTO BONUS ---- */
+  .oto-bonus {
+    background: rgba(255,215,0,0.04);
+    border: 1px solid rgba(255,215,0,0.2);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+
+  /* ---- FOOTER ---- */
+  .dossie-footer {
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    text-align: center;
+    line-height: 1.65;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ---- SECTION DIVIDER ---- */
+  .sec-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0 14px;
+  }
+  .sec-divider-line { flex: 1; height: 1px; background: var(--border); }
+  .sec-divider-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+  }
+
+  @media print {
+    .global-bg, .stars-layer { display:none; }
+    body { background: #fff; color: #000; }
+    .dossie-wrap { padding: 20px; }
+    .btn-cta, .btn-secondary { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="global-bg">
+  <div class="grad-top"></div>
+  <div class="red-orb"></div>
+  <div class="grid"></div>
+</div>
+<div class="stars-layer"></div>
+<div class="stars-layer"></div>
+
+<div class="dossie-wrap" id="dossieWrap">
+  <!-- Filled by JS -->
+  <div class="text-center" style="padding:80px 0;">
+    <div style="font-family:'Roboto Mono',monospace;font-size:0.7rem;color:var(--text-dim);">Carregando dossiê...</div>
+  </div>
+</div>
+
+<script>
+(function(){
+
+// =================== DATA ===================
+
+var PROFILES = {
+  low: {
+    name: 'O Parceiro Seguro',
+    badge: 'low',
+    badgeText: 'Baixo risco',
+    riskPct: 12,
+    scoreRange: '0–7 pontos',
+    description: [
+      'O perfil comportamental identificado nesta análise corresponde ao padrão de um parceiro emocionalmente presente e consistente. Os sinais avaliados não indicam duplicidade de comportamento ou ocultamento ativo de informações.',
+      'Homens neste perfil tendem a ser previsíveis em sua rotina e emocionalmente acessíveis. Quando surgem distâncias, costumam ter origem em pressões externas — trabalho, saúde, família — e não em envolvimento com terceiros.',
+      'A intuição de desconfiança que motivou esta análise pode estar relacionada a inseguranças pessoais, histórico de relacionamentos anteriores ou ansiedade de relacionamento. Isso não invalida seus sentimentos, mas sugere que a conversa mais necessária pode ser sobre comunicação e não sobre infidelidade.',
+      'Recomendação: invista em comunicação aberta. Compartilhe seus sentimentos sem acusação. O risco aqui não é traição — é o silêncio que pode criar distância onde não havia nenhuma.'
+    ],
+    actionPlan: [
+      'Inicie uma conversa honesta sobre como você está se sentindo, sem acusações diretas.',
+      'Identifique se há gatilhos externos (seu trabalho, família, amigos) que podem estar alimentando a insegurança.',
+      'Proponha um ritual de conexão semanal — jantar, passeio, conversa sem celular.',
+      'Se a ansiedade persistir, considere suporte psicológico individual. Não é fraqueza — é inteligência emocional.'
+    ]
+  },
+  moderate: {
+    name: 'O Descuidado',
+    badge: 'moderate',
+    badgeText: 'Risco moderado',
+    riskPct: 42,
+    scoreRange: '8–15 pontos',
+    description: [
+      'O padrão identificado sugere um distanciamento emocional progressivo com características ambíguas. Este perfil não indica traição ativa confirmada, mas apresenta sinais consistentes com início de envolvimento externo ou insatisfação não comunicada.',
+      'O "Descuidado" é o tipo que, muitas vezes, não planeja a traição. Ela começa como uma amizade próxima, uma atenção extra de alguém no trabalho, uma conversa online que vai longe demais. Ele não acorda decidido a trair — mas também não coloca limites quando deveria.',
+      'Os sinais que você percebeu são reais. O fato de você estar aqui não é paranoia — é intuição calibrada por comportamentos concretos. A questão é que os dados ainda não são conclusivos o suficiente para um confronto direto.',
+      'O próximo passo não é acusar. É observar. E decidir se o padrão se confirma ou se dissolve nas próximas semanas.'
+    ],
+    actionPlan: [
+      'Documente mentalmente (ou por escrito) os comportamentos que te preocuparam. Datas, situações, mudanças específicas.',
+      'Observe sem confrontar por 7 a 14 dias. Veja se o padrão continua, se intensifica ou se a situação tem outra explicação.',
+      'Abra uma conversa sobre o relacionamento em geral — não sobre traição. "Tenho sentido distância entre nós, quero entender o que está acontecendo."',
+      'Se os sinais persistirem, uma segunda análise com dados atualizados pode ser determinante antes de qualquer decisão.'
+    ]
+  },
+  elevated: {
+    name: 'O Duplo',
+    badge: 'elevated',
+    badgeText: 'Risco elevado',
+    riskPct: 72,
+    scoreRange: '16–22 pontos',
+    description: [
+      'A convergência de sinais identificados nesta análise aponta para um padrão comportamental consistente com manutenção de vida dupla. "O Duplo" não é alguém que desliza ocasionalmente — é alguém que gerencia ativamente duas versões de si mesmo.',
+      'Ele sabe o que está fazendo. A proteção excessiva do celular, a alteração dos padrões de saída, a frieza emocional com você enquanto mantém a aparência de normalidade — tudo isso exige esforço consciente. Não é descuido. É gestão.',
+      'A boa notícia cruel: você não está ficando louca. A má notícia: a negação, se vier, será convincente e agressiva. Ele praticou. Está preparado para a conversa que você ainda não teve.',
+      'Você não precisa de mais provas para validar seus sentimentos. Mas precisa de estratégia para o próximo passo — seja ele a confrontação, a saída ou a decisão de buscar evidências concretas antes de agir.'
+    ],
+    actionPlan: [
+      'Não confronte sem estratégia. Um confronto mal preparado dá a ele tempo para desmontar evidências e consolidar a narrativa de negação.',
+      'Documente tudo que for possível — prints de conversas, horários, mudanças de comportamento — antes de qualquer conversa direta.',
+      'Decida o que você quer: a verdade nua ou a manutenção do relacionamento. Esses caminhos exigem abordagens diferentes.',
+      'Busque suporte emocional antes do confronto. Amiga de confiança, terapeuta ou grupo de apoio. Você vai precisar de âncoras.',
+      'Após o confronto, independente da resposta dele, tenha um plano B: onde você vai, o que você vai fazer, quem vai te ajudar.'
+    ]
+  },
+  critical: {
+    name: 'O Arquiteto',
+    badge: 'critical',
+    badgeText: 'Risco crítico',
+    riskPct: 91,
+    scoreRange: '23–33 pontos',
+    description: [
+      'Esta análise identificou o padrão de maior preocupação: o perfil do "Arquiteto". Não se trata de um deslize ou de uma fase temporária. Os dados comportamentais apontam para alguém que construiu e mantém ativamente uma estrutura paralela — com planejamento, controle e negação sistemática.',
+      'O Arquiteto é o perfil mais difícil de confrontar porque ele não comete erros por acidente. Cada resposta foi ensaiada. Cada explicação foi preparada. Ele sabe exatamente como fazer você duvidar de si mesma — porque é isso que o protege.',
+      'O isolamento emocional que você sente não é imaginação. É uma técnica. Quanto mais você se questiona, menos ameaça você representa para a estrutura que ele montou. Reconhecer isso é o primeiro ato de recuperação da sua clareza.',
+      'A pergunta que importa agora não é "ele está traindo?" — a resposta provável você já sabe. A pergunta é: "o que eu vou fazer com isso?" E essa escolha precisa ser feita com cabeça fria, apoio de pessoas de confiança e um plano concreto.'
+    ],
+    actionPlan: [
+      'Não revele que você sabe ou suspeita. Qualquer sinal seu dará a ele tempo para preparar a narrativa e eliminar evidências.',
+      'Busque apoio jurídico antes de qualquer confronto se houver patrimônio compartilhado, filhos ou dependências financeiras envolvidas.',
+      'Identifique duas ou três pessoas de confiança — fora do círculo social de vocês — e as informe sobre a situação.',
+      'Decida se quer evidências para um processo legal, para sua própria certeza ou se já tem informação suficiente para agir.',
+      'Cuide da sua saúde mental ativamente. O que você está vivendo tem impacto real. Terapia não é opcional nesse cenário — é necessária.',
+      'Quando o confronto vier — e virá — faça-o com apoio presente (física ou virtualmente) e com os passos seguintes já definidos.'
+    ]
+  }
+};
+
+var SIGNAL_DATA = [
+  {
+    name: 'Sinal 1 — Comportamento com o celular',
+    weight: 'Alto peso diagnóstico',
+    interps: [
+      'Nenhuma alteração significativa no comportamento com o celular foi registrada. Este sinal é neutro e não contribui para indicação de risco.',
+      'Uma leve mudança nos hábitos com o celular foi percebida. Em baixa intensidade, pode ser atribuída a privacidade pessoal ou mudanças de rotina no trabalho.',
+      'Proteção ativa do celular é um dos sinais com maior correlação com comportamento de ocultamento. A troca de tela e o aumento do sigilo são padrões clássicos de quem tem algo a esconder.',
+      'Celular permanentemente protegido e bloqueio imediato na sua presença é o sinal de celular mais crítico identificado. Em 91% dos casos analisados com este padrão, foi confirmado algum nível de dupla comunicação.'
+    ]
+  },
+  {
+    name: 'Sinal 2 — Intimidade e vida sexual',
+    weight: 'Alto peso diagnóstico',
+    interps: [
+      'A frequência e qualidade da intimidade permanecem consistentes. Este é um dos sinais mais confiáveis de ausência de envolvimento externo ativo.',
+      'Uma diminuição moderada foi identificada. Isoladamente, pode ter múltiplas causas: estresse, cansaço, mudança hormonal. Não é conclusivo.',
+      'Queda significativa na intimidade combinada com distância emocional forma um padrão de alto risco. Quando a conexão física e emocional diminuem simultaneamente, costuma haver um terceiro elemento na equação.',
+      'Ausência quase total de intimidade ou comportamento mecânico é um sinal crítico. O desinteresse físico abrupto é frequentemente relatado por mulheres que confirmaram traição posterior.'
+    ]
+  },
+  {
+    name: 'Sinal 3 — Padrão de saídas e ausências',
+    weight: 'Peso moderado',
+    interps: [
+      'Nenhuma mudança no padrão de saídas foi detectada. A rotina permanece estável e previsível.',
+      'Algumas saídas adicionais com justificativas razoáveis. Pode ser real — trabalho, amigos, família. Não é suficiente para indicação de risco isoladamente.',
+      'Aumento nas ausências com horários alterados é um padrão consistente com disponibilidade para encontros externos. A mudança de horário é um marcador importante.',
+      'Saídas frequentes com justificativas vagas ou contraditórias é o padrão de maior risco neste sinal. A incoerência das explicações é mais reveladora do que as ausências em si.'
+    ]
+  },
+  {
+    name: 'Sinal 4 — Distanciamento emocional',
+    weight: 'Alto peso diagnóstico',
+    interps: [
+      'Presença emocional estável e consistente. Não há indicação de redirecionamento afetivo para terceiros.',
+      'Leve distração identificada. Pode ser pressão externa — trabalho, projetos, preocupações pessoais. Monitorar evolução.',
+      'Distância emocional significativa é um dos sinais mais subestimados e mais reveladores. Quando alguém redireciona a atenção emocional para fora do relacionamento, o parceiro sente — mesmo sem saber por quê.',
+      'Frieza sistemática e tratamento indiferente dentro do relacionamento indica desconexão emocional severa. Este nível de distância raramente ocorre sem causa externa.'
+    ]
+  },
+  {
+    name: 'Sinal 5 — Evidências encontradas',
+    weight: 'Peso decisivo',
+    interps: [
+      'Nenhuma evidência suspeita foi relatada. Este é o sinal mais direto e sua ausência contribui significativamente para a indicação de baixo risco.',
+      'Uma ocorrência com explicação aceita. A aceitação da explicação pode ser real ou pode ser o início de um padrão de negação bem construído.',
+      'Elementos que geraram desconforto sem conclusão definitiva formam um padrão de alerta. A dificuldade de classificar o que foi encontrado é, em si, um sinal.',
+      'Evidências concretas já encontradas — conversas, apps, prints — é o sinal de maior peso nesta análise. Evidências existem. A questão agora é o que fazer com elas.'
+    ]
+  },
+  {
+    name: 'Sinal 6 — Presença nas redes sociais',
+    weight: 'Peso moderado',
+    interps: [
+      'Comportamento nas redes sociais consistente com relacionamento assumido. Sem alterações relevantes.',
+      'Redução na exposição conjunta pode ter múltiplas causas — privacidade pessoal, mudança de hábitos. Não conclusivo isoladamente.',
+      'Apagamento ativo da presença do relacionamento nas redes é um comportamento de ocultamento deliberado. Quem apaga o casal está se posicionando como disponível para quem olha de fora.',
+      'Comportamento de solteiro nas redes enquanto mantém relacionamento é um dos padrões mais reveladores. A curadoria da imagem pública de solteiro exige esforço consciente.'
+    ]
+  },
+  {
+    name: 'Sinal 7 — Reação a perguntas e questionamentos',
+    weight: 'Alto peso diagnóstico',
+    interps: [
+      'Responde a questionamentos de forma natural e sem defensividade. Este padrão é característico de quem não tem o que esconder.',
+      'Defensividade ocasional pode ser personalidade ou insegurança. Não suficiente para indicação sem outros sinais.',
+      'Irritabilidade frequente e acusação de paranoia é uma técnica clássica de inversão. Transformar sua pergunta legítima num problema seu é uma forma de encerrar a investigação.',
+      'Explosão, ataque ou esquiva completa na presença de questionamentos é o padrão de maior risco neste sinal. A intensidade da reação é proporcional ao tamanho do que está sendo protegido.'
+    ]
+  },
+  {
+    name: 'Sinal 8 — Mudanças na aparência e cuidado pessoal',
+    weight: 'Peso moderado',
+    interps: [
+      'Nenhuma mudança significativa na aparência ou nos hábitos de cuidado. Padrão estável.',
+      'Melhora leve que pode estar associada a motivação profissional, saúde ou influência social. Não conclusivo.',
+      'Mudança notável na aparência sem envolvimento do parceiro é um sinal de atenção. Quando alguém começa a se cuidar mais mas não te inclui nessa transformação, a motivação provavelmente é externa.',
+      'Mudança drástica e abrupta no cuidado pessoal sem explicação é consistente com o comportamento de alguém que está tentando impressionar uma nova pessoa. É quase universal em relatos de traição confirmada.'
+    ]
+  },
+  {
+    name: 'Sinal 9 — Qualidade da comunicação',
+    weight: 'Alto peso diagnóstico',
+    interps: [
+      'Comunicação de qualidade mantida. Compartilhamento emocional presente. Sinal muito positivo.',
+      'Leve redução na profundidade das conversas. Pode ser fase, cansaço, rotina. Monitorar.',
+      'Conversas superficiais e ausência de compartilhamento emocional indica desconexão. Quando a intimidade verbal desaparece, a intimidade emocional já foi embora há mais tempo.',
+      'Evasividade sistemática e vida paralela perceptível na comunicação é o sinal mais revelador desta categoria. Quando alguém para de te contar sobre a própria vida, é porque tem uma vida que não quer te contar.'
+    ]
+  },
+  {
+    name: 'Sinal 10 — Intuição e percepção interna',
+    weight: 'Peso interpretativo',
+    interps: [
+      'Sensação de tranquilidade relatada. A intuição é uma das ferramentas mais confiáveis em relacionamentos. Sua percepção de normalidade é um dado relevante.',
+      'Dúvida presente mas esperançosa. Este estado é comum no início de um processo de percepção de mudança. Não ignore — mas também não decida com base apenas nisso.',
+      'Intuição ativa e alerta é, segundo pesquisas em psicologia relacional, correta em mais de 70% dos casos quando combinada com comportamentos concretos. Você não está ficando louca.',
+      'Certeza interna que busca apenas confirmação é o estado de quem já processou a informação emocionalmente. O dossiê não é o que vai te convencer — você já está convencida. É o que vai te dar o chão para agir.'
+    ]
+  }
+];
+
+// =================== HELPERS ===================
+
+function getScore() {
+  var score = 0;
+  for(var i = 1; i <= 10; i++){
+    var v = parseInt(localStorage.getItem('q' + i));
+    if(!isNaN(v)) score += v;
+  }
+  var tb = parseInt(localStorage.getItem('qtb'));
+  if(!isNaN(tb)) score += tb;
+  return score;
+}
+
+function getProfileKey(score) {
+  if(score <= 7)  return 'low';
+  if(score <= 15) return 'moderate';
+  if(score <= 22) return 'elevated';
+  return 'critical';
+}
+
+function getAnswer(qNum) {
+  var v = parseInt(localStorage.getItem('q' + qNum));
+  return isNaN(v) ? 1 : v;
+}
+
+function getAnswerLabel(v) {
+  return ['A','B','C','D'][Math.min(v, 3)];
+}
+
+function getAnswerText(qIdx, v) {
+  var q = [
+    ['Normal, sem nenhuma mudança que eu tenha notado.', 'Ele virou um pouco mais cuidadoso, mas nada que me preocupe muito.', 'Ele protege muito mais o celular do que antes. Já vi ele mudar de tela quando cheguei perto.', 'O celular nunca sai do bolso ou fica sempre virado pra baixo. Se eu chego perto, ele trava na hora.'],
+    ['Está normal, sem grandes mudanças.', 'Diminuiu um pouco, mas a rotina explica.', 'Caiu bastante. Ele parece distante mesmo quando estamos juntos.', 'Praticamente inexistente. Quando acontece, parece mecânico ou ele evita.'],
+    ['Não. A rotina dele é a mesma de sempre.', 'Teve algumas saídas a mais, mas tudo com justificativa razoável.', 'Sim. Saídas mais frequentes e os horários de retorno mudaram.', 'Sim, e as justificativas ficam cada vez mais vagas ou contraditórias.'],
+    ['Presente, carinhoso e atencioso como sempre.', 'Um pouco mais distraído, mas nada que acenda alertas.', 'Distante, irritável em momentos sem sentido, ou ausente emocionalmente.', 'Frio, desinteressado, e às vezes age como se eu fosse um incômodo.'],
+    ['Nunca encontrei nada suspeito.', 'Uma vez achei algo, mas ele explicou e fez sentido.', 'Já encontrei coisas que me deixaram desconfortável, mas sem certeza.', 'Sim. Já vi prints, conversas ou apps que não fazem parte da nossa relação.'],
+    ['Normal. Posta sobre nós quando faz sentido.', 'Parou de nos marcar juntos, mas não é um problema grande.', 'Praticamente apagou qualquer sinal de que temos um relacionamento online.', 'Age como se fosse solteiro nas redes. Sem fotos nossas, interage com outras pessoas de forma estranha.'],
+    ['Responde normalmente, sem nervosismo.', 'Às vezes fica um pouco na defensiva, mas acaba explicando.', 'Fica irritado ou acusa você de paranoia com frequência.', 'Explode, parte para o ataque ou simplesmente muda de assunto sem responder.'],
+    ['Não. Continua do mesmo jeito de sempre.', 'Houve uma melhora pequena, talvez por motivação do trabalho.', 'Sim. Começou a malhar, usar perfume diferente, se vestir melhor.', 'Mudança drástica e sem explicação. Cuida mais de si mesmo, mas não te inclui nisso.'],
+    ['Sim. A comunicação entre nós é boa.', 'Um pouco menos do que antes, mas ainda conversamos.', 'As conversas ficaram superficiais. Ele não compartilha mais o que sente.', 'Ele é evasivo sobre praticamente tudo. Parece que esconde uma vida paralela.'],
+    ['Estou tranquila. Acho que é só insegurança minha.', 'Tenho dúvidas, mas espero que não seja nada.', 'Minha intuição está gritando que algo está errado.', 'No fundo, acho que já sei a resposta. Só preciso de confirmação.']
+  ];
+  var answers = q[qIdx] || q[0];
+  return answers[Math.min(v, 3)];
+}
+
+function rnd(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function rndFloat(min, max, dec) {
+  return (Math.random() * (max - min) + min).toFixed(dec);
+}
+
+function generateProtocol() {
+  var n = '';
+  for(var i = 0; i < 8; i++) n += Math.floor(Math.random()*10);
+  return n;
+}
+
+function formatDateTime() {
+  var d = new Date();
+  var day = ('0'+d.getDate()).slice(-2);
+  var mon = ('0'+(d.getMonth()+1)).slice(-2);
+  var yr  = d.getFullYear();
+  var hr  = ('0'+d.getHours()).slice(-2);
+  var min = ('0'+d.getMinutes()).slice(-2);
+  return day + '/' + mon + '/' + yr + ' ' + hr + ':' + min;
+}
+
+function getSignalClass(v) {
+  if(v === 0) return 'low';
+  if(v === 1) return 'moderate';
+  if(v === 2) return 'elevated';
+  return 'critical';
+}
+
+// =================== URL PARAMS FALLBACK ===================
+// Lê dados da URL quando vindo de domínio diferente (ex: funil → membros separado)
+(function() {
+  try {
+    var params = new URLSearchParams(window.location.search);
+
+    // Restaura quiz answers no localStorage
+    var answersParam = params.get('answers');
+    if(answersParam) {
+      var ans = JSON.parse(answersParam);
+      Object.keys(ans).forEach(function(k){ localStorage.setItem(k, ans[k]); });
+    }
+
+    // Restaura dados no sessionStorage
+    if(params.get('key'))   sessionStorage.setItem('profileKey',    params.get('key'));
+    if(params.get('score')) sessionStorage.setItem('profileScore',  params.get('score'));
+    if(params.get('nome'))  sessionStorage.setItem('nome_suspeito', params.get('nome'));
+    if(params.get('oto'))   sessionStorage.setItem('comprou_oto1',  params.get('oto'));
+
+    // Foto vem no hash (#foto=base64...)
+    var hash = window.location.hash;
+    if(hash && hash.indexOf('#foto=') === 0) {
+      var fotoDecoded = decodeURIComponent(hash.slice(6));
+      if(fotoDecoded) sessionStorage.setItem('foto_base64', fotoDecoded);
+    }
+  } catch(e) {}
+})();
+
+// =================== RENDER ===================
+
+var score    = getScore();
+var pKey     = sessionStorage.getItem('profileKey') || getProfileKey(score);
+var profile  = PROFILES[pKey] || PROFILES['moderate'];
+var foto     = sessionStorage.getItem('foto_base64');
+var comprou  = sessionStorage.getItem('comprou_oto1') === 'true';
+var protocol = generateProtocol();
+var datetime = formatDateTime();
+
+var answers  = [];
+for(var qi = 1; qi <= 10; qi++) answers.push(getAnswer(qi));
+
+// Top 3 signals by score
+var signalScores = answers.map(function(v,i){ return {idx:i, v:v}; });
+signalScores.sort(function(a,b){ return b.v - a.v; });
+var top3 = signalScores.slice(0,3);
+
+// Scan data
+var platformList = ['Badoo','Meetic','ParPerfeito','OkCupid','Lovoo','Plenty of Fish','Happn','Once'];
+var profilesFound = pKey==='low' ? 0 : pKey==='moderate' ? rnd(0,1) : pKey==='elevated' ? 1 : rnd(1,2);
+var foundPlatforms = [];
+for(var pi=0; pi<profilesFound; pi++){
+  var pIdx = rnd(0, platformList.length-1);
+  if(foundPlatforms.indexOf(platformList[pIdx])===-1) foundPlatforms.push(platformList[pIdx]);
+}
+
+// Nome do suspeito
+var nomeSuspeito = sessionStorage.getItem('nome_suspeito') || '';
+var N = nomeSuspeito ? nomeSuspeito : 'o analisado';
+var Ncap = nomeSuspeito ? nomeSuspeito.charAt(0).toUpperCase() + nomeSuspeito.slice(1) : 'O analisado';
+
+// Fotos extras borradas
+var extraNums = [];
+while(extraNums.length < 2) {
+  var en = rnd(1, 70);
+  if(extraNums.indexOf(en) === -1) extraNums.push(en);
+}
+
+// =================== BUILD HTML ===================
+
+// =================== BUILD HTML ===================
+
+function buildHeader() {
+  var avatarHtml = foto
+    ? '<img src="' + foto + '" class="dossie-avatar" alt="' + Ncap + '">'
+    : '<div class="dossie-avatar-placeholder"><iconify-icon icon="lucide:user" width="24"></iconify-icon></div>';
+
+  var classColor = pKey==='low'?'green': pKey==='moderate'?'yellow': pKey==='elevated'?'orange':'red';
+
+  return (
+    '<div class="dossie-hero mb-16">' +
+      '<div style="font-family:\'Roboto Mono\',monospace;font-size:0.55rem;color:var(--red);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px;text-align:center;">Raio-X do Traidor — Dossiê Confidencial</div>' +
+      '<div class="dossie-hero-top">' +
+        avatarHtml +
+        '<div>' +
+          '<div class="dossie-subject-label">Sujeito analisado</div>' +
+          '<div class="dossie-subject-name">' + Ncap + '</div>' +
+          '<div style="margin-top:6px;"><span class="risk-badge ' + pKey + '">' + profile.badgeText + '</span></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="dossie-meta-grid">' +
+        '<div class="dossie-meta-item"><div class="dossie-meta-label">Protocolo</div><div class="dossie-meta-val">#' + protocol + '</div></div>' +
+        '<div class="dossie-meta-item"><div class="dossie-meta-label">Data/Hora</div><div class="dossie-meta-val">' + datetime + '</div></div>' +
+        '<div class="dossie-meta-item"><div class="dossie-meta-label">Pontuação</div><div class="dossie-meta-val" style="color:var(--' + classColor + ');">' + score + ' / 33</div></div>' +
+        '<div class="dossie-meta-item"><div class="dossie-meta-label">Sinais analisados</div><div class="dossie-meta-val">10 de 10</div></div>' +
+      '</div>' +
+    '</div>'
+  );
+}
+
+function buildScanReport() {
+  var simPct = rnd(87,97);
+  var perfilStatusHtml = (pKey==='low')
+    ? '<span style="color:var(--green);">Sem registros</span>'
+    : (pKey==='moderate')
+      ? '<span style="color:var(--green);">Sem perfis ativos</span>'
+      : '<span style="color:var(--yellow);">Contas inativas detectadas</span>';
+
+  return (
+    '<div class="sec-block mb-14">' +
+      '<div class="sec-title">' +
+        '<div class="sec-icon"><iconify-icon icon="lucide:scan" width="14"></iconify-icon></div>' +
+        'Varredura Digital' +
+      '</div>' +
+      '<div class="scan-grid">' +
+        '<div class="scan-stat"><div class="scan-stat-val">' + rnd(847,1243) + '</div><div class="scan-stat-label">Plataformas</div></div>' +
+        '<div class="scan-stat"><div class="scan-stat-val">' + rndFloat(2.1,4.8,1) + 'M</div><div class="scan-stat-label">Imgs indexadas</div></div>' +
+        '<div class="scan-stat"><div class="scan-stat-val">' + simPct + '%</div><div class="scan-stat-label">Similaridade máx.</div></div>' +
+        '<div class="scan-stat"><div class="scan-stat-val">60s</div><div class="scan-stat-label">Tempo varredura</div></div>' +
+      '</div>' +
+      '<div style="margin-top:12px;font-family:\'Roboto Mono\',monospace;font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;">Status em apps &nbsp;→&nbsp; ' + perfilStatusHtml + '</div>' +
+    '</div>'
+  );
+}
+
+function buildEvidenciaGaleria() {
+  var foto1Html = foto
+    ? '<div class="foto-card">' +
+        '<img src="' + foto + '" alt="' + Ncap + '">' +
+        '<div class="foto-overlay">Foto enviada · Ref.</div>' +
+      '</div>'
+    : '<div class="foto-card" style="background:rgba(239,35,60,0.08);border:1px solid rgba(239,35,60,0.2);display:flex;align-items:center;justify-content:center;">' +
+        '<iconify-icon icon="lucide:user" width="28" style="color:var(--red);opacity:0.5;"></iconify-icon>' +
+      '</div>';
+
+  var foto2Html =
+    '<div class="foto-card borrada">' +
+      '<img src="https://randomuser.me/api/portraits/men/' + extraNums[0] + '.jpg" alt="">' +
+      '<div class="foto-lock-badge"><span>BLOQUEADO</span></div>' +
+      '<div class="foto-overlay">Plataforma A</div>' +
+    '</div>';
+
+  var foto3Html =
+    '<div class="foto-card borrada">' +
+      '<img src="https://randomuser.me/api/portraits/men/' + extraNums[1] + '.jpg" alt="">' +
+      '<div class="foto-lock-badge"><span>BLOQUEADO</span></div>' +
+      '<div class="foto-overlay">Plataforma B</div>' +
+    '</div>';
+
+  var appsHtml = '';
+  if(pKey === 'low' || pKey === 'moderate') {
+    appsHtml =
+      '<div class="app-row r-nenhum">' +
+        '<div class="app-dot green"></div>' +
+        '<div>' +
+          '<div class="app-name">' + (pKey==='low' ? 'Nenhuma conta localizada' : 'Sem contas ativas encontradas') + '</div>' +
+          '<div class="app-status-text" style="color:var(--text-muted);">' +
+            (pKey==='low'
+              ? 'Varredura em 847+ plataformas — sem registros associados a ' + N
+              : 'Nenhum perfil ativo de ' + N + ' foi localizado nas plataformas indexadas.') +
+          '</div>' +
+        '</div>' +
+      '</div>';
+  } else {
+    appsHtml = ['Tinder','Badoo','Meetic'].map(function(app){
+      return (
+        '<div class="app-row r-inativo">' +
+          '<div class="app-dot yellow"></div>' +
+          '<div style="flex:1;">' +
+            '<div class="app-name">' + app + '</div>' +
+            '<div class="app-status-text" style="color:var(--yellow);">Conta criada · Inativa no momento</div>' +
+          '</div>' +
+          '<div class="app-sim">' + rnd(87,97) + '% sim.</div>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  var galeriaTitle = (pKey==='elevated'||pKey==='critical') ? 'Registros Encontrados' : 'Registros da Varredura';
+  var galeriaDesc = (pKey==='elevated'||pKey==='critical')
+    ? 'Imagem de ' + Ncap + ' cruzada com plataformas indexadas. Registros com similaridade acima do limiar de alerta.'
+    : 'Imagem de referência utilizada na varredura de ' + Ncap + ' nas principais bases digitais.';
+
+  return (
+    '<div class="sec-block red-accent mb-14">' +
+      '<div class="sec-title">' +
+        '<div class="sec-icon"><iconify-icon icon="lucide:camera" width="14"></iconify-icon></div>' +
+        galeriaTitle +
+      '</div>' +
+      '<div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:12px;line-height:1.5;">' + galeriaDesc + '</div>' +
+      '<div class="foto-galeria">' + foto1Html + foto2Html + foto3Html + '</div>' +
+      '<div class="sec-divider"><div class="sec-divider-line"></div><div class="sec-divider-label">Status em apps</div><div class="sec-divider-line"></div></div>' +
+      appsHtml +
+    '</div>'
+  );
+}
+
+function buildSignals() {
+  var rows = answers.map(function(v, i){
+    var sig = SIGNAL_DATA[i];
+    var cls = getSignalClass(v);
+    var levelText = v===0?'Baixo': v===1?'Moderado': v===2?'Elevado':'Crítico';
+    var lbl = getAnswerLabel(v);
+    var txt = getAnswerText(i, v);
+    var interp = sig.interps[v].replace(/\b(ele|o parceiro|o sujeito)\b/gi, N);
+    return (
+      '<div class="sig-card ' + cls + '">' +
+        '<div class="sig-header">' +
+          '<span class="sig-name">' + sig.name + '</span>' +
+          '<span class="sig-level ' + cls + '">' + levelText + '</span>' +
+        '</div>' +
+        '<div class="sig-answer">Sua resposta: "' + txt + '"</div>' +
+        '<div class="sig-interp">' + interp + '</div>' +
+      '</div>'
+    );
+  }).join('');
+
+  return (
+    '<div class="sec-block mb-14">' +
+      '<div class="sec-title">' +
+        '<div class="sec-icon"><iconify-icon icon="lucide:list-checks" width="14"></iconify-icon></div>' +
+        'Análise dos 10 Sinais' +
+      '</div>' +
+      rows +
+    '</div>'
+  );
+}
+
+function buildTop3() {
+  var convergenceScore = Math.round((top3.reduce(function(a,s){return a+s.v;},0) / 9) * 100);
+  var items = top3.map(function(s, idx){
+    var sig = SIGNAL_DATA[s.idx];
+    var cls = getSignalClass(s.v);
+    var interp = sig.interps[s.v].replace(/\b(ele|o parceiro|o sujeito)\b/gi, N);
+    return (
+      '<div class="conv-item">' +
+        '<div class="conv-num">' + (idx+1) + '</div>' +
+        '<div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">' +
+            '<span class="risk-badge ' + cls + '" style="font-size:0.5rem;">' + (s.v===3?'Crítico':s.v===2?'Elevado':s.v===1?'Moderado':'Baixo') + '</span>' +
+            '<span style="font-family:\'Manrope\',sans-serif;font-size:0.8rem;font-weight:700;color:var(--text);">' + sig.name + '</span>' +
+          '</div>' +
+          '<div style="font-size:0.77rem;color:var(--text-muted);line-height:1.5;">' + interp.substring(0,130) + '…</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join('');
+
+  return (
+    '<div class="sec-block" style="background:rgba(239,35,60,0.05);border:1px solid rgba(239,35,60,0.18);border-radius:16px;padding:20px;margin-bottom:14px;">' +
+      '<div class="sec-title" style="color:var(--red);">' +
+        '<div class="sec-icon"><iconify-icon icon="lucide:zap" width="14"></iconify-icon></div>' +
+        'Top 3 — Convergência Crítica' +
+      '</div>' +
+      items +
+      '<div style="margin-top:14px;padding:12px;background:rgba(239,35,60,0.06);border-radius:10px;font-size:0.8rem;color:var(--text-muted);line-height:1.55;">' +
+        '<strong style="color:var(--red);">' + convergenceScore + '% de convergência</strong> — Estes três sinais combinados formam o núcleo diagnóstico da análise de ' + Ncap + '. A presença simultânea deles eleva significativamente a precisão do resultado.' +
+      '</div>' +
+    '</div>'
+  );
+}
+
+function buildProfile() {
+  var descHtml = profile.description.map(function(p){
+    var txt = p.replace(/\b(ele|o parceiro|o sujeito)\b/gi, N);
+    return '<p class="profile-desc-p">' + txt + '</p>';
+  }).join('');
+
+  var actItems = profile.actionPlan.map(function(step, i){
+    return (
+      '<div class="action-item">' +
+        '<div class="action-num">' + (i+1) + '</div>' +
+        '<div class="action-text">' + step + '</div>' +
+      '</div>'
+    );
+  }).join('');
+
+  return (
+    '<div class="profile-card-main mb-14">' +
+      '<div style="margin-bottom:12px;">' +
+        '<span class="risk-badge ' + profile.badge + '">' + profile.badgeText + '</span>' +
+      '</div>' +
+      '<div class="profile-name-wrap" style="margin-bottom:6px;">' +
+        '<span class="profile-big-name typewriter" id="memberProfileName"></span>' +
+        '<div class="profile-name-underline" id="memberNameUnderline"></div>' +
+      '</div>' +
+      '<div style="font-family:\'Roboto Mono\',monospace;font-size:0.58rem;color:var(--text-dim);margin-bottom:16px;">' + profile.scoreRange + '</div>' +
+      '<div class="risk-track mb-20"><div class="risk-marker" id="memberRiskMarker" style="left:5%;"></div></div>' +
+      descHtml +
+    '</div>' +
+    '<div class="sec-block mb-14">' +
+      '<div class="sec-title">' +
+        '<div class="sec-icon"><iconify-icon icon="lucide:clipboard-list" width="14"></iconify-icon></div>' +
+        'Plano de Ação — ' + Ncap +
+      '</div>' +
+      actItems +
+    '</div>'
+  );
+}
+
+function buildOtoBonus() {
+  if(!comprou) return '';
+  return (
+    '<div class="oto-bonus mb-14">' +
+      '<div class="sec-title" style="color:var(--gold);">' +
+        '<div class="sec-icon yellow"><iconify-icon icon="lucide:star" width="14"></iconify-icon></div>' +
+        'Monitoramento 30 Dias — Ativação' +
+      '</div>' +
+      '<p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:12px;">Parabéns por garantir o Monitoramento Contínuo. Veja como ativar:</p>' +
+      '<div class="action-item"><div class="action-num" style="background:var(--gold);color:#000;">1</div><div class="action-text">Você receberá um e-mail de confirmação em até 24h com acesso ao painel de monitoramento.</div></div>' +
+      '<div class="action-item"><div class="action-num" style="background:var(--gold);color:#000;">2</div><div class="action-text">Configure os alertas de e-mail no painel para ser notificada imediatamente sobre qualquer nova atividade detectada.</div></div>' +
+      '<div class="action-item"><div class="action-num" style="background:var(--gold);color:#000;">3</div><div class="action-text">Relatórios semanais chegarão todo domingo às 08h com resumo das variações de padrão digital de ' + N + '.</div></div>' +
+      '<div class="action-item"><div class="action-num" style="background:var(--gold);color:#000;">4</div><div class="action-text">Em caso de mudança crítica detectada, você receberá uma notificação de emergência com orientações específicas.</div></div>' +
+    '</div>'
+  );
+}
+
+function buildUpsellBlock() {
+  var copy = (pKey === 'low')
+    ? 'Mesmo com resultado tranquilizador, sentimentos não resolvidos precisam de espaço. A conversa certa, na hora certa, pode transformar insegurança em conexão real.'
+    : 'Você vai precisar conversar com ' + N + '. E essa conversa vai ser a mais difícil — se você entrar sem preparo. Mulheres que chegam sem estratégia se perdem nas negativas e saem mais confusas do que entraram.';
+
+  return (
+    '<div class="upsell-block mb-14">' +
+      '<div style="font-family:\'Roboto Mono\',monospace;font-size:0.58rem;color:var(--red);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px;">Próximo passo</div>' +
+      '<div style="font-family:\'Manrope\',sans-serif;font-size:1.1rem;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:12px;">Você tem as informações.<br>Agora precisa saber o que fazer com elas.</div>' +
+      '<p style="font-size:0.85rem;color:var(--text-muted);line-height:1.7;margin-bottom:16px;">' + copy + '</p>' +
+      '<div style="font-family:\'Manrope\',sans-serif;font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:10px;">Guia da Conversa Decisiva</div>' +
+      '<ul class="upsell-checklist mb-20">' +
+        '<li>As 7 perguntas que revelam a verdade mesmo quando ' + N + ' nega</li>' +
+        '<li>Como identificar mentiras em tempo real pela linguagem corporal e verbal</li>' +
+        '<li>O que fazer se ' + N + ' virar o jogo e te acusar de paranoia</li>' +
+        '<li>Como sair da conversa com clareza — independente da resposta</li>' +
+        '<li>Roteiro para 3 cenários: confissão, negação, dúvida</li>' +
+      '</ul>' +
+      '<div style="display:flex;align-items:baseline;gap:12px;justify-content:center;margin-bottom:16px;">' +
+        '<span style="font-size:0.82rem;color:var(--text-muted);text-decoration:line-through;">R$ 47,00</span>' +
+        '<span style="font-family:\'Manrope\',sans-serif;font-size:2rem;font-weight:800;color:var(--text);">R$ 27,00</span>' +
+      '</div>' +
+      '<a class="btn-cta mb-12" href="#">Quero o Guia da Conversa Decisiva</a>' +
+      '<p style="font-size:0.7rem;color:var(--text-dim);text-align:center;">Acesso imediato &middot; PDF + áudio &middot; Garantia de 7 dias</p>' +
+    '</div>'
+  );
+}
+
+function buildButtons() {
+  return (
+    '<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">' +
+      '<button class="btn-secondary" onclick="window.print()">' +
+        '<iconify-icon icon="lucide:printer" width="16" style="vertical-align:middle;margin-right:6px;"></iconify-icon>' +
+        'Salvar dossiê em PDF' +
+      '</button>' +
+      '<button class="btn-secondary" onclick="window.location.href=\'upload.html\'">' +
+        '<iconify-icon icon="lucide:refresh-cw" width="16" style="vertical-align:middle;margin-right:6px;"></iconify-icon>' +
+        'Nova análise' +
+      '</button>' +
+    '</div>'
+  );
+}
+
+function buildFooter() {
+  return (
+    '<div class="dossie-footer">' +
+      'Raio-X do Traidor · Dossiê Confidencial · Protocolo #' + protocol + '<br>' +
+      'Este relatório é gerado a partir de análise comportamental e padrões de reconhecimento digital. Os resultados têm caráter informativo. Não constituem prova jurídica e não substituem aconselhamento profissional.' +
+    '</div>'
+  );
+}
+
+// =================== RENDER ALL ===================
+var wrap = document.getElementById('dossieWrap');
+wrap.innerHTML =
+  buildHeader() +
+  buildScanReport() +
+  buildEvidenciaGaleria() +
+  buildSignals() +
+  buildTop3() +
+  buildProfile() +
+  buildOtoBonus() +
+  buildUpsellBlock() +
+  buildButtons() +
+  buildFooter();
+
+// =================== TYPEWRITER ===================
+var nameEl = document.getElementById('memberProfileName');
+var underlineEl = document.getElementById('memberNameUnderline');
+var twName = profile.name;
+var ci = 0;
+
+function typeChar() {
+  if(ci < twName.length) {
+    nameEl.textContent += twName[ci];
+    ci++;
+    setTimeout(typeChar, 75);
+  } else {
+    nameEl.classList.add('done');
+    if(underlineEl) underlineEl.classList.add('grow');
+  }
+}
+setTimeout(typeChar, 300);
+
+// =================== RISK MARKER ===================
+setTimeout(function(){
+  var marker = document.getElementById('memberRiskMarker');
+  if(marker) marker.style.left = profile.riskPct + '%';
+}, 600);
+
+})();
+</script>
+</body>
+</html>

@@ -95,11 +95,11 @@
   </div>
 
   <!-- CTA -->
-  <a class="btn-cta mb-12" href="membros.html" id="ctaOto">
+  <a class="btn-cta mb-12" href="#" id="ctaOto">
     Sim, quero o Monitoramento 30 Dias por R$ 37,00
   </a>
 
-  <a class="reject-link" href="membros.html" id="rejectLink">
+  <a class="reject-link" href="#" id="rejectLink">
     Não, prefiro ir direto ao dossiê.
   </a>
 
@@ -144,13 +144,53 @@
 
   updateTimer();
 
+  // =================== MEMBROS URL ===================
+  var MEMBROS_URL = 'https://funil-membros.vercel.app';
+
+  function buildMembrosUrl(oto) {
+    var key   = sessionStorage.getItem('profileKey')  || 'low';
+    var score = sessionStorage.getItem('profileScore') || '0';
+    var nome  = sessionStorage.getItem('nome_suspeito') || '';
+    var foto  = sessionStorage.getItem('foto_base64')  || '';
+
+    // quiz answers q1..q10 + qtb
+    var answers = {};
+    for(var i = 1; i <= 10; i++) {
+      var v = localStorage.getItem('q' + i);
+      if(v !== null) answers['q' + i] = v;
+    }
+    var qtb = localStorage.getItem('qtb');
+    if(qtb !== null) answers['qtb'] = qtb;
+
+    var params = new URLSearchParams();
+    params.set('key',   key);
+    params.set('score', score);
+    params.set('nome',  nome);
+    params.set('oto',   oto);
+    params.set('answers', JSON.stringify(answers));
+
+    // foto em base64 pode ser grande — passa só se couber
+    // URLSearchParams não tem limite fixo mas navegadores aceitam até ~8KB de query
+    // foto pode ser muito maior, então passamos pelo hash
+    var url = MEMBROS_URL + '?' + params.toString();
+
+    // foto vai no hash (não vai para o servidor)
+    if(foto) url += '#foto=' + encodeURIComponent(foto);
+
+    return url;
+  }
+
   // =================== SAVE CHOICE ===================
-  document.getElementById('ctaOto').addEventListener('click', function(){
+  document.getElementById('ctaOto').addEventListener('click', function(e){
+    e.preventDefault();
     sessionStorage.setItem('comprou_oto1', 'true');
+    window.location.href = buildMembrosUrl('true');
   });
 
-  document.getElementById('rejectLink').addEventListener('click', function(){
+  document.getElementById('rejectLink').addEventListener('click', function(e){
+    e.preventDefault();
     sessionStorage.setItem('comprou_oto1', 'false');
+    window.location.href = buildMembrosUrl('false');
   });
 
 })();
