@@ -707,11 +707,16 @@ function getSignalClass(v) {
       Object.keys(ans).forEach(function(k){ localStorage.setItem(k, ans[k]); });
     }
 
-    // Restaura dados no sessionStorage
-    if(params.get('key'))   sessionStorage.setItem('profileKey',    params.get('key'));
-    if(params.get('score')) sessionStorage.setItem('profileScore',  params.get('score'));
-    if(params.get('nome'))  sessionStorage.setItem('nome_suspeito', params.get('nome'));
-    if(params.get('oto'))   sessionStorage.setItem('comprou_oto1',  params.get('oto'));
+    // Restaura dados no sessionStorage — suporta params diretos e UTMs do GG Checkout
+    var key   = params.get('key')          || params.get('utm_content');
+    var sc    = params.get('score')        || params.get('utm_term');
+    var nome  = params.get('nome')         || decodeURIComponent(params.get('utm_campaign') || '');
+    var oto   = params.get('oto');
+
+    if(key)  sessionStorage.setItem('profileKey',    key);
+    if(sc)   sessionStorage.setItem('profileScore',  sc);
+    if(nome) sessionStorage.setItem('nome_suspeito', nome);
+    if(oto)  sessionStorage.setItem('comprou_oto1',  oto);
 
     // Foto vem no hash (#foto=base64...)
     var hash = window.location.hash;

@@ -345,25 +345,13 @@
     e.preventDefault();
     sessionStorage.setItem('chegou_paywall', '1');
 
-    var key   = profileKey;
-    var sc    = score;
-    var nome  = sessionStorage.getItem('nome_suspeito') || '';
+    var nome = sessionStorage.getItem('nome_suspeito') || '';
 
-    // Monta answers compacto para caber no utm_term
-    var answers = {};
-    for(var i = 1; i <= 10; i++){
-      var v = localStorage.getItem('q' + i);
-      if(v !== null) answers[i] = v;
-    }
-    var qtb = localStorage.getItem('qtb');
-    if(qtb !== null) answers['tb'] = qtb;
-
-    // utm_content = profileKey, utm_term = score, utm_campaign = nome, utm_source = answers JSON compacto
+    // Passa só o essencial — URL curta para evitar bloqueio do GG
     var params = new URLSearchParams();
-    params.set('utm_content',  key);
-    params.set('utm_term',     sc);
-    params.set('utm_campaign', nome);
-    params.set('utm_source',   JSON.stringify(answers));
+    params.set('utm_content',  profileKey);
+    params.set('utm_term',     score);
+    params.set('utm_campaign', encodeURIComponent(nome).slice(0, 50));
 
     var url = GG_CHECKOUT_URL + '?' + params.toString();
     window.location.href = url;
