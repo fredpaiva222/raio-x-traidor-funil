@@ -339,7 +339,7 @@
     '</div>';
 
   // =================== CTA → GG CHECKOUT ===================
-  var GG_CHECKOUT_SLUG = 'p7u97yIba6rXM0k4NWMc'; // Checkout ID do GG
+  var GG_CHECKOUT_URL = 'https://www.ggcheckout.com/checkout/v2/p7u97yIba6rXM0k4NWMc';
 
   document.getElementById('ctaBtn').addEventListener('click', function(e){
     e.preventDefault();
@@ -365,7 +365,7 @@
     params.set('utm_campaign', nome);
     params.set('utm_source',   JSON.stringify(answers));
 
-    var url = 'https://checkout.ggcheckout.com/' + GG_CHECKOUT_SLUG + '?' + params.toString();
+    var url = GG_CHECKOUT_URL + '?' + params.toString();
     window.location.href = url;
   });
 
