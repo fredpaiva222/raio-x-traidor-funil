@@ -14,22 +14,47 @@
     position: relative;
     width: 100%;
     margin-bottom: 20px;
+    background: rgba(239,35,60,0.05);
+    border: 1px solid rgba(239,35,60,0.3);
+    border-radius: 14px;
+    padding: 14px 16px 14px;
   }
-  .name-field-label {
+  .name-field-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 10px;
+  }
+  .name-field-step {
+    background: var(--red);
+    color: #fff;
     font-family: 'Roboto Mono', monospace;
     font-size: 0.6rem;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 8px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .name-field-label {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
     display: block;
+  }
+  .name-field-hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    line-height: 1.4;
   }
   .name-field {
     width: 100%;
-    padding: 13px 16px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(239,35,60,0.25);
+    border-radius: 10px;
     color: var(--text);
     font-family: 'Manrope', sans-serif;
     font-size: 0.95rem;
@@ -37,14 +62,15 @@
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
     -webkit-appearance: none;
+    box-sizing: border-box;
   }
   .name-field::placeholder { color: var(--text-dim); font-weight: 400; }
   .name-field:focus {
-    border-color: rgba(239,35,60,0.5);
-    box-shadow: 0 0 0 3px rgba(239,35,60,0.08);
+    border-color: rgba(239,35,60,0.6);
+    box-shadow: 0 0 0 3px rgba(239,35,60,0.1);
   }
   .name-field.filled {
-    border-color: rgba(239,35,60,0.3);
+    border-color: rgba(239,35,60,0.4);
   }
   .page-center {
     position: relative;
@@ -133,12 +159,16 @@
     </div>
 
     <!-- TITLE -->
-    <h1 class="upload-title mb-8">Envie uma foto do rosto dele</h1>
-    <p class="upload-sub mb-24">Uma foto clara e recente garante uma análise mais precisa.</p>
+    <h1 class="upload-title mb-8">Complete os dados para gerar o dossiê</h1>
+    <p class="upload-sub mb-24">Preencha os dois campos abaixo para iniciar a varredura.</p>
 
     <!-- CAMPO NOME -->
     <div class="name-field-wrap">
-      <label class="name-field-label" for="nomeInput">Nome do suspeito</label>
+      <div class="name-field-header">
+        <span class="name-field-step">PASSO 1</span>
+        <label class="name-field-label" for="nomeInput">Qual o nome dele?</label>
+      </div>
+      <p class="name-field-hint">Informe o primeiro nome para personalizar o dossiê.</p>
       <input
         type="text"
         id="nomeInput"
@@ -147,6 +177,12 @@
         autocomplete="off"
         maxlength="40"
       >
+    </div>
+
+    <!-- PASSO 2 LABEL -->
+    <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px;">
+      <span class="name-field-step">PASSO 2</span>
+      <span style="font-family:'Manrope',sans-serif;font-size:0.85rem;font-weight:700;color:var(--text);">Envie uma foto do rosto dele</span>
     </div>
 
     <!-- UPLOAD ZONE -->
